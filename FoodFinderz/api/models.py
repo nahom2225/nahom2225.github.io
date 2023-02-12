@@ -16,6 +16,14 @@ def generate_unique_id():
             break
     return account_id
 
+def generate_unique_post_id():
+    length = 15
+    while True:
+        account_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
+        if Post.objects.filter(account_id=account_id).count() == 0:
+            break
+    return account_id
+
 # Create your models here.
 class Account(AbstractUser):
     current_session = models.CharField(max_length=50, default = "")
@@ -39,6 +47,17 @@ class Account(AbstractUser):
         help_text=('Specific permissions for this user.'),
         related_query_name='user',
     )
+
+class Tags(models.Model):
+    tag = models.CharField(max_length=50, default = "")
+
+class Post(models.Model):
+    title = models.CharField(max_length=50, default = "")
+    food = models.CharField(max_length=50, default = "")
+    current_session = models.CharField(max_length=50, default = "")
+    description = models.CharField(max_length=2000, default = "")
+    account_poster = models.ForeignKey(Account, on_delete=models.CASCADE)
+    tags = models.ManyToManyField(Tags)
 
 
 
