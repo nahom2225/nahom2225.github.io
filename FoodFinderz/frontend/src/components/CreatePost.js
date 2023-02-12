@@ -71,7 +71,7 @@ export default function CreatePost(props) {
                     <Card style = {cardStyle}>
                         <Grid container style = {{ gap : 10 }}>
                             <Grid item xs = {12} spacing = {3}></Grid>
-                            <Grid item xs = {6} align = "center">
+                            <Grid item xs = {9}>
                                 <TextField
                                     error={null}
                                     label=""
@@ -82,12 +82,14 @@ export default function CreatePost(props) {
                                     onChange={(e) => {setTitle(e.target.value)}}
                                     inputProps={{
                                         style: {
-                                            width: "600px",
+                                            width: "550px",
                                         },
                                         maxLength: 50
-                                        }}
-                                        
+                                        }}                                        
                                 />
+                                <Typography variant = "h6">
+                                {title.length} / 50
+                                </Typography>
                             </Grid>
                             <Grid item xs = {12}>
                                 <TextField
@@ -100,11 +102,14 @@ export default function CreatePost(props) {
                                     onChange={(e) => {setFood(e.target.value)}}
                                     inputProps={{
                                         style: {
-                                            width: "600px",                                                                    
+                                            width: "550px",                                                                    
                                         },
                                         maxLength: 50
                                         }}
                                 />
+                                <Typography variant = "h6">
+                                {food.length} / 50
+                                </Typography>
                             </Grid>
                             <Grid item xs = {12}>
                                 <TextField
@@ -122,6 +127,9 @@ export default function CreatePost(props) {
                                         maxLength: 50
                                         }}
                                 />
+                                <Typography variant = "h6">
+                                {location.length} / 50
+                                </Typography>
                             </Grid>
                             <Grid item xs = {12}>
                                 <TextField
@@ -142,6 +150,9 @@ export default function CreatePost(props) {
                                         maxLength: 2000
                                         }}
                                 />
+                                <Typography variant = "h6">
+                                {description.length} / 2000
+                                </Typography>
                             </Grid>
                             <Grid item xs = {12} spacing = {3}></Grid>
                         </Grid>

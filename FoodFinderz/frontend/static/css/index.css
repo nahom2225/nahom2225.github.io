@@ -26,7 +26,11 @@ html, body {
 
 .topmidleft {
     position: absolute;
-    top: 25%;
+    top: 15%;
     left: 15%;
 }
+
+.scroll {
+    overflow:auto;
+  }
 
