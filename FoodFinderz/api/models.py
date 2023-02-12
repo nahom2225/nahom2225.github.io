@@ -58,6 +58,8 @@ class Post(models.Model):
     description = models.CharField(max_length=2000, default = "")
     account_poster = models.ForeignKey(Account, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tags)
+    upvotes = models.IntegerField(null=False, default=0)
+    downvotes = models.IntegerField(null=False, default=0)
 
 
 

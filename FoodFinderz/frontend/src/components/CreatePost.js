@@ -125,7 +125,8 @@ export default function CreatePost(props) {
                                     onChange={() => {}}
                                     inputProps={{
                                         style: {
-                                            width: "840px",
+                                            width: "800px",
+                                            height: "150px"
                                         },
                                         }}
                                 />
