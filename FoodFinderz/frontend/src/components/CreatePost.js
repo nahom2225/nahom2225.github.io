@@ -15,6 +15,10 @@ export default function CreatePost(props) {
 
     const[username, setUsername] = useState('');
     const[account, setAccount] = useState({});
+    const[title, setTitle] = useState("");
+    const[food, setFood] = useState("");
+    const[location, setLocation] = useState("");
+    const[description, setDescription] = useState("");
   
   
     useEffect(() => {
@@ -65,8 +69,9 @@ export default function CreatePost(props) {
                 </Grid>
                 <Grid item xs = {12} > 
                     <Card style = {cardStyle}>
-                        <Grid container align = "left" style = {{ gap : 10 }}>
-                            <Grid item xs = {12}>
+                        <Grid container style = {{ gap : 10 }}>
+                            <Grid item xs = {12} spacing = {3}></Grid>
+                            <Grid item xs = {6} align = "center">
                                 <TextField
                                     error={null}
                                     label=""
@@ -78,8 +83,10 @@ export default function CreatePost(props) {
                                     inputProps={{
                                         style: {
                                             width: "600px",
+                                            maxLength: 10
                                         },
                                         }}
+                                        
                                 />
                             </Grid>
                             <Grid item xs = {12}>
@@ -93,7 +100,8 @@ export default function CreatePost(props) {
                                     onChange={() => {}}
                                     inputProps={{
                                         style: {
-                                            width: "600px",
+                                            width: "600px",                        
+                                            maxLength: 50
                                         },
                                         }}
                                 />
@@ -110,12 +118,16 @@ export default function CreatePost(props) {
                                     inputProps={{
                                         style: {
                                             width: "600px",
+                                            maxLength: 50
                                         },
                                         }}
                                 />
                             </Grid>
                             <Grid item xs = {12}>
                                 <TextField
+                                    multiline
+                                    rows={9}
+                                    maxRows={10}
                                     error={null}
                                     label=""
                                     placeholder="Description (Optional)"
@@ -126,11 +138,12 @@ export default function CreatePost(props) {
                                     inputProps={{
                                         style: {
                                             width: "800px",
-                                            height: "150px"
+                                            maxLength: 2000
                                         },
                                         }}
                                 />
                             </Grid>
+                            <Grid item xs = {12} spacing = {3}></Grid>
                         </Grid>
                     </Card>
                 </Grid>
