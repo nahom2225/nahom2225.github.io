@@ -76,15 +76,15 @@ export default function CreatePost(props) {
                                     error={null}
                                     label=""
                                     placeholder="Title"
-                                    value={null}
+                                    value={title}
                                     helperText={null}
                                     variant="outlined"
-                                    onChange={() => {}}
+                                    onChange={(e) => {setTitle(e.target.value)}}
                                     inputProps={{
                                         style: {
                                             width: "600px",
-                                            maxLength: 10
                                         },
+                                        maxLength: 50
                                         }}
                                         
                                 />
@@ -94,15 +94,15 @@ export default function CreatePost(props) {
                                     error={null}
                                     label=""
                                     placeholder="Food"
-                                    value={null}
+                                    value={food}
                                     helperText={null}
                                     variant="outlined"
-                                    onChange={() => {}}
+                                    onChange={(e) => {setFood(e.target.value)}}
                                     inputProps={{
                                         style: {
-                                            width: "600px",                        
-                                            maxLength: 50
+                                            width: "600px",                                                                    
                                         },
+                                        maxLength: 50
                                         }}
                                 />
                             </Grid>
@@ -111,15 +111,15 @@ export default function CreatePost(props) {
                                     error={null}
                                     label=""
                                     placeholder="Location"
-                                    value={null}
+                                    value={location}
                                     helperText={null}
                                     variant="outlined"
-                                    onChange={() => {}}
+                                    onChange={(e) => {setLocation(e.target.value)}}
                                     inputProps={{
                                         style: {
-                                            width: "600px",
-                                            maxLength: 50
+                                            width: "600px",                                            
                                         },
+                                        maxLength: 50
                                         }}
                                 />
                             </Grid>
@@ -131,15 +131,15 @@ export default function CreatePost(props) {
                                     error={null}
                                     label=""
                                     placeholder="Description (Optional)"
-                                    value={null}
+                                    value={description}
                                     helperText={null}
                                     variant="outlined"
-                                    onChange={() => {}}
+                                    onChange={(e) => {setDescription(e.target.value)}}
                                     inputProps={{
                                         style: {
-                                            width: "800px",
-                                            maxLength: 2000
+                                            width: "800px",                                            
                                         },
+                                        maxLength: 2000
                                         }}
                                 />
                             </Grid>
