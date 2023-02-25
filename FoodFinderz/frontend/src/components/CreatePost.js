@@ -45,6 +45,10 @@ export default function CreatePost(props) {
         transitionDuration: '0.3s',
     }
 
+    function handleCreatePostButtonPressed() {
+
+    }
+
     return (
         <div>
             <AppBar position="static">
@@ -154,7 +158,14 @@ export default function CreatePost(props) {
                                 {description.length} / 2000
                                 </Typography>
                             </Grid>
-                            <Grid item xs = {12} spacing = {3}></Grid>
+                            <Grid item xs = {12} spacing = {3} align = "left">
+                                <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={handleCreatePostButtonPressed}>
+                                    POST!
+                                </Button>
+                            </Grid>
                         </Grid>
                     </Card>
                 </Grid>

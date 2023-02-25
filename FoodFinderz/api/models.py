@@ -25,11 +25,32 @@ def generate_unique_post_id():
     return account_id
 
 # Create your models here.
+
+
+class Post(models.Model):
+    TAG_CHOICES = (
+    ('V', 'Vegan'),
+    ('M', 'Meat'),
+    ('B', 'Breakfast'),
+    ('L', 'Lunch'),
+    ('D', 'Dinner')
+    )
+    title = models.CharField(max_length=50, default = "")
+    food = models.CharField(max_length=50, default = "")
+    current_session = models.CharField(max_length=50, default = "")
+    description = models.CharField(max_length=2000, default = "")
+    account_poster = models.CharField(max_length = 151, default = "")
+    tags = models.CharField(max_length=1, choices=TAG_CHOICES)
+    upvotes = models.IntegerField(null=False, default=0)
+    downvotes = models.IntegerField(null=False, default=0)
+
+
 class Account(AbstractUser):
     current_session = models.CharField(max_length=50, default = "")
     account_id = models.CharField(max_length = 15, default=generate_unique_id)
     created_at = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
+    posts = models.ManyToManyField(Post)
     groups = models.ManyToManyField(
         Group,
         related_name='account_groups',
@@ -48,18 +69,7 @@ class Account(AbstractUser):
         related_query_name='user',
     )
 
-class Tags(models.Model):
-    tag = models.CharField(max_length=50, default = "")
 
-class Post(models.Model):
-    title = models.CharField(max_length=50, default = "")
-    food = models.CharField(max_length=50, default = "")
-    current_session = models.CharField(max_length=50, default = "")
-    description = models.CharField(max_length=2000, default = "")
-    account_poster = models.ForeignKey(Account, on_delete=models.CASCADE)
-    tags = models.ManyToManyField(Tags)
-    upvotes = models.IntegerField(null=False, default=0)
-    downvotes = models.IntegerField(null=False, default=0)
 
 
 
