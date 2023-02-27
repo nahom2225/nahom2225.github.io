@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { Grid, Button, ButtonGroup, Typography, TextField, AppBar, Toolbar, Card, IconButton, LinearProgress, Box} from '@material-ui/core'
+import { Grid, ButtonGroup, Typography, TextField, AppBar, Toolbar, Card, IconButton, LinearProgress, Box} from '@material-ui/core'
 import {BrowserRouter as Router, Routes, Route, Link, Redirect, Navigate } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {withRouter} from "./withRouter";
 import AccountCard from "./AccountCard";
 import Divider from '@mui/material/Divider'
+import Button from "@mui/material/Button";
 
 export default function CreatePost(props) {
 
@@ -64,7 +65,7 @@ export default function CreatePost(props) {
             </Grid>
             </AppBar>
             <div className = "topmidleft">
-            <Grid container  align = "left" style={{ gap: 15 }}>
+            <Grid container style={{ gap: 15 }}>
                 <Grid item xs = {12}>
                     <Typography variant="h5"> Create a Post! </Typography>
                 </Grid>
@@ -72,9 +73,8 @@ export default function CreatePost(props) {
                     <Divider variant = "fullWidth" sx={{ borderBottomWidth: 5, width:"840px"}}/>
                 </Grid>
                 <Grid item xs = {12} > 
-                    <Card style = {cardStyle}>
+                    <Card className = "card">
                         <Grid container style = {{ gap : 10 }}>
-                            <Grid item xs = {12} spacing = {3}></Grid>
                             <Grid item xs = {9}>
                                 <TextField
                                     error={null}
@@ -158,17 +158,20 @@ export default function CreatePost(props) {
                                 {description.length} / 2000
                                 </Typography>
                             </Grid>
-                            <Grid item xs = {12} spacing = {3} align = "left">
-                                <Button
-                                color="primary"
-                                variant="contained"
-                                onClick={handleCreatePostButtonPressed}>
-                                    POST!
-                                </Button>
+                            <Grid item xs = {12} container justifyContent="flex-end">
+                                <Grid item>
+                                    <Button
+                                        color="primary"
+                                        variant="contained"
+                                        onClick={handleCreatePostButtonPressed}
+                                        className = "card.button">
+                                        Post
+                                    </Button>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Card>
-                </Grid>
+                </Grid>                
             </Grid>
             </div>
         </div>

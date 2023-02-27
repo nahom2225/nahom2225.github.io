@@ -34,3 +34,15 @@ html, body {
     overflow:auto;
   }
 
+.card {
+position: relative;
+height: 575px; 
+width: 840px;
+}
+
+.card button {
+position: absolute;
+bottom: 2%;
+right: 2%; 
+}
+

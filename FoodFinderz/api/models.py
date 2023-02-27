@@ -43,6 +43,7 @@ class Post(models.Model):
     tags = models.CharField(max_length=1, choices=TAG_CHOICES)
     upvotes = models.IntegerField(null=False, default=0)
     downvotes = models.IntegerField(null=False, default=0)
+    posted = models.BooleanField(null = False, default = False)
 
 
 class Account(AbstractUser):
