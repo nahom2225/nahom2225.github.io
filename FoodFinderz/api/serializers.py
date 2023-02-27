@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Account
+from .models import Account, Post
 
 #Takes models with all python related code, and translates to a JSON resposne
 #Takes keys turns to strings
@@ -20,5 +20,9 @@ class LoginAccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = ('username', 'password')
 
+class CreatePostSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model = Post
+        fields = ('title', 'food', 'location', 'description')
 
         

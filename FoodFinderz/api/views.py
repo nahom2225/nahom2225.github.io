@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import serializers
 from rest_framework.response import Response 
 from rest_framework import generics, status
-from .serializers import AccountSerializer, CreateAccountSerializer, LoginAccountSerializer
+from .serializers import AccountSerializer, CreateAccountSerializer, LoginAccountSerializer, CreatePostSerializer
 from .models import Account
 from rest_framework.views import APIView
 from django.http import JsonResponse
@@ -147,3 +147,9 @@ class AccountInSession(APIView):
             'account_id': self.request.session.get('account_id')
         }
         return JsonResponse(data, status=status.HTTP_200_OK)
+    
+class CreatePost(APIView):
+    serializer_class = CreatePostSerializer
+    
+    def post(self, request, format=None):
+        
