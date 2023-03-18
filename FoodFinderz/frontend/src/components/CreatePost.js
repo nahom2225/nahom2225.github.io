@@ -20,6 +20,7 @@ export default function CreatePost(props) {
     const[food, setFood] = useState("");
     const[location, setLocation] = useState("");
     const[description, setDescription] = useState("");
+    const[error, setError] = useState("");
   
   
     useEffect(() => {
@@ -47,8 +48,36 @@ export default function CreatePost(props) {
     }
 
     function handleCreatePostButtonPressed() {
-
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify({
+                title : title, 
+                food : food,
+                location : location,
+                description : description,
+                account_poster : username,                
+            }),
+        };
+        fetch("/api/create-post", requestOptions)
+        .then((response) => {
+            if (response.ok) {
+                response.json()
+                .then((data) => {navigate(`/frontpage`);
+                                console.log(data);})
+            } else if (response.status === 409) {
+                response.json().then((data) => {setError(data.error);
+                    console.log(data.error);});
+                    console.log(response.statusText);
+                    console.log("409")
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            setError(error)
+        });
     }
+
 
     return (
         <div>

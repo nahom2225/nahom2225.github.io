@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.response import Response 
 from rest_framework import generics, status
 from .serializers import AccountSerializer, CreateAccountSerializer, LoginAccountSerializer, CreatePostSerializer
-from .models import Account
+from .models import Account, Post
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.utils import timezone
@@ -152,4 +152,18 @@ class CreatePost(APIView):
     serializer_class = CreatePostSerializer
     
     def post(self, request, format=None):
-        
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            queryset = Post.objects.filter(title=serializer.data.get('title'), description = serializer.data.get('description'))
+            if queryset.exists():
+                return Response({'Bad Post' : 'Duplicate Post'}, status=status.HTTP_409_CONFLICT)
+            else:
+                post = serializer.save(posted=True)
+                account_poster = serializer.validated_data.get('account_poster')
+                account = Account.objects.get(username=account_poster)
+                account.posts.add(post)
+                return Response(CreatePostSerializer(post).data, status=status.HTTP_201_CREATED)
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_409_CONFLICT)

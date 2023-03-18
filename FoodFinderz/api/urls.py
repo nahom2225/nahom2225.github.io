@@ -11,7 +11,8 @@ urlpatterns = [
     path('login', LoginAccountView.as_view(), name = "login"),
     path('get-account', GetAccount.as_view()),
     path('logout/', MyLogoutView.as_view(), name='logout'),
-    path('account-in-session', AccountInSession.as_view())                                                                                                                                                                          
+    path('account-in-session', AccountInSession.as_view()),
+    path('create-post', CreatePost.as_view())                                                                                                                                                                          
 ]
 
 

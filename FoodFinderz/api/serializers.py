@@ -23,6 +23,6 @@ class LoginAccountSerializer(serializers.ModelSerializer):
 class CreatePostSerializer(serializers.ModelSerializer): 
     class Meta:
         model = Post
-        fields = ('title', 'food', 'location', 'description')
+        fields = ('title', 'food', 'location', 'description', 'account_poster')
 
         
