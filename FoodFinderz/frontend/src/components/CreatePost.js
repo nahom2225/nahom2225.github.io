@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { Grid, ButtonGroup, Typography, TextField, AppBar, Toolbar, Card, IconButton, LinearProgress, Box} from '@material-ui/core'
+import { Grid, ButtonGroup, Typography, TextField, AppBar, Toolbar, Card, IconButton, LinearProgress, Box, Collapse} from '@material-ui/core'
 import {BrowserRouter as Router, Routes, Route, Link, Redirect, Navigate } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -9,6 +9,7 @@ import {withRouter} from "./withRouter";
 import AccountCard from "./AccountCard";
 import Divider from '@mui/material/Divider'
 import Button from "@mui/material/Button";
+import Alert from "@material-ui/lab/Alert";
 
 export default function CreatePost(props) {
 
@@ -48,6 +49,11 @@ export default function CreatePost(props) {
     }
 
     function handleCreatePostButtonPressed() {
+        console.log('title:', title);
+        console.log('food:', food);
+        console.log('location:', location);
+        console.log('description:', description);
+        console.log('username:', username);
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json"},
@@ -62,14 +68,15 @@ export default function CreatePost(props) {
         fetch("/api/create-post", requestOptions)
         .then((response) => {
             if (response.ok) {
-                response.json()
-                .then((data) => {navigate(`/frontpage`);
-                                console.log(data);})
-            } else if (response.status === 409) {
-                response.json().then((data) => {setError(data.error);
+                response.json().then((data) => {
+                    setError("");
+                    navigate(`/api/all-posts`);
+                    console.log(data);})
+            } else if (response.status === 409 || response.status === 400) {
+                response.json().then((data) => {
+                    setError(data.error);
                     console.log(data.error);});
-                    console.log(response.statusText);
-                    console.log("409")
+                    console.log(response.statusText);                    
             }
         })
         .catch((error) => {
@@ -91,6 +98,13 @@ export default function CreatePost(props) {
                 <Grid item xs={12} sm={9} align="right">
                 <AccountCard frontpage = {false} {...account}/>
                 </Grid>
+            </Grid>
+            <Grid item xs = {12} algin = "center">
+                <Collapse in = {error != ""}>
+                    <Alert severity="error" onClose={() => {setError("")}}>
+                        {error}
+                    </Alert>
+                </Collapse>
             </Grid>
             </AppBar>
             <div className = "topmidleft">

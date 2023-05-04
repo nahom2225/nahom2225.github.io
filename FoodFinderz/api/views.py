@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import serializers
 from rest_framework.response import Response 
 from rest_framework import generics, status
-from .serializers import AccountSerializer, CreateAccountSerializer, LoginAccountSerializer, CreatePostSerializer
+from .serializers import*
 from .models import Account, Post
 from rest_framework.views import APIView
 from django.http import JsonResponse
@@ -22,6 +22,10 @@ from django.shortcuts import redirect
 class AccountView(generics.ListAPIView):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
+
+class PostView(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer    
 
 
 class CreateAccountView(APIView):
@@ -157,13 +161,16 @@ class CreatePost(APIView):
 
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            queryset = Post.objects.filter(title=serializer.data.get('title'), description = serializer.data.get('description'))
+            queryset = Post.objects.filter(title=serializer.validated_data.get('title'), description=serializer.validated_data.get('description'))
             if queryset.exists():
-                return Response({'Bad Post' : 'Duplicate Post'}, status=status.HTTP_409_CONFLICT)
+                return Response({'error': 'Duplicate Post'}, status=status.HTTP_409_CONFLICT)
             else:
-                post = serializer.save(posted=True)
+                post = serializer.save(posted=True, created_at = timezone.now())
                 account_poster = serializer.validated_data.get('account_poster')
                 account = Account.objects.get(username=account_poster)
                 account.posts.add(post)
-                return Response(CreatePostSerializer(post).data, status=status.HTTP_201_CREATED)
-        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_409_CONFLICT)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'error': 'Missing Information'}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+

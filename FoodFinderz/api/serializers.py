@@ -10,6 +10,11 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = '__all__'
 
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = '__all__'
+
 class CreateAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
@@ -24,5 +29,8 @@ class CreatePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('title', 'food', 'location', 'description', 'account_poster')
+        extra_kwargs = {
+            'description': {'required': False, 'allow_null': True, 'allow_blank': True},
+        }
 
         

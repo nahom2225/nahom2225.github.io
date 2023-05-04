@@ -27,23 +27,21 @@ def generate_unique_post_id():
 # Create your models here.
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+    
 class Post(models.Model):
-    TAG_CHOICES = (
-    ('V', 'Vegan'),
-    ('M', 'Meat'),
-    ('B', 'Breakfast'),
-    ('L', 'Lunch'),
-    ('D', 'Dinner')
-    )
-    title = models.CharField(max_length=50, default = "")
-    food = models.CharField(max_length=50, default = "")
-    current_session = models.CharField(max_length=50, default = "")
-    description = models.CharField(max_length=2000, default = "")
-    account_poster = models.CharField(max_length = 151, default = "")
-    tags = models.CharField(max_length=1, choices=TAG_CHOICES)
+    title = models.CharField(max_length=150)
+    food = models.CharField(max_length=150)
+    location = models.CharField(max_length=150)
+    current_session = models.CharField(max_length=50, default="")
+    description = models.CharField(max_length=2000, blank=True, null=True)
+    account_poster = models.CharField(max_length=151)
+    tags = models.ManyToManyField(Tag)
     upvotes = models.IntegerField(null=False, default=0)
     downvotes = models.IntegerField(null=False, default=0)
-    posted = models.BooleanField(null = False, default = False)
+    posted = models.BooleanField(null=False, default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Account(AbstractUser):

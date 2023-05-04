@@ -46,3 +46,24 @@ bottom: 2%;
 right: 2%; 
 }
 
+.posts-container {
+    background-color: #f7f7f7;
+    overflow-y: scroll;
+    height: 400px;
+  }
+
+  .page-range-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .page-range-box {
+    border-radius: 4px;
+    padding: 5px 10px;
+    position: absolute;
+    right: 49%;
+    top: 13%;
+    left: auto;
+    white-space: nowrap;
+  }
