@@ -20,13 +20,13 @@ export default function FrontPage(props) {
 
   useEffect(() => {
     // code to run on component mount
-    fetch(`/api/get-posts?page=${page}`).then((response) => {
+    fetch(`/api/get-posts?page=${page}&posts_per_page=${postPerPage}`).then((response) => {
       if (!response.ok){
         console.log("OH OOHHH")
       } else {
         response.json().then((data) => {
-          setPosts(data);
-          setNumberOfPosts(posts.length);
+          setPosts(data["results"]);
+          setNumberOfPosts(data["count"]);
           console.log(data);
         })
       }
@@ -47,7 +47,8 @@ export default function FrontPage(props) {
     // cleanup function to run on component unmount
     return () => {
     };
-  }, [page]);
+  }, [page, postPerPage]);
+  
 
 
   const handleNextPage = () => {

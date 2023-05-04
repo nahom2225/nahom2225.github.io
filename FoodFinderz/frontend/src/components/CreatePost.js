@@ -70,7 +70,7 @@ export default function CreatePost(props) {
             if (response.ok) {
                 response.json().then((data) => {
                     setError("");
-                    navigate(`/api/all-posts`);
+                    navigate(`/frontpage`);
                     console.log(data);})
             } else if (response.status === 409 || response.status === 400) {
                 response.json().then((data) => {

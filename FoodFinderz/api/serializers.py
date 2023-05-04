@@ -33,4 +33,12 @@ class CreatePostSerializer(serializers.ModelSerializer):
             'description': {'required': False, 'allow_null': True, 'allow_blank': True},
         }
 
+class PostSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model = Post
+        fields = '__all__'
+        extra_kwargs = {
+            'description': {'required': False, 'allow_null': True, 'allow_blank': True},
+        }
+
         

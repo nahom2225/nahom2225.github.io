@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import serializers
+from rest_framework import serializers, renderers
 from rest_framework.response import Response 
 from rest_framework import generics, status
 from .serializers import*
@@ -13,6 +13,9 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django.core.paginator import Paginator
+from rest_framework.renderers import JSONRenderer
+
 
 
 
@@ -172,5 +175,14 @@ class CreatePost(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({'error': 'Missing Information'}, status=status.HTTP_400_BAD_REQUEST)
     
+#@api_view(['GET'])
+class PostsList(APIView):
+    #renderer_classes = [JSONRenderer]
 
+    def get(self, request, page, posts_per_page):
+        posts = Post.objects.order_by('-created_at')
+        paginator = Paginator(posts, posts_per_page)
+        paginated_posts = paginator.get_page(page)
+        serializer = PostSerializer(paginated_posts, many=True)
+        return Response(serializer.data)
 

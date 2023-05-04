@@ -13,7 +13,8 @@ urlpatterns = [
     path('get-account', GetAccount.as_view()),
     path('logout/', MyLogoutView.as_view(), name='logout'),
     path('account-in-session', AccountInSession.as_view()),
-    path('create-post', CreatePost.as_view())                                                                                                                                                                          
+    path('create-post', CreatePost.as_view()),
+    path('get-posts/<int:page>/<int:posts_per_page>', PostsList.as_view())                                                                                                                                                                          
 ]
 
 
