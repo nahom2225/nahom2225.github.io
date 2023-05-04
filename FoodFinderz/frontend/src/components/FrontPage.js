@@ -12,22 +12,24 @@ export default function FrontPage(props) {
 
   const[username, setUsername] = useState('');
   const[account, setAccount] = useState({});
-  const[posts, setPosts] = useState([]);
+  const[posts, setPosts] = useState([{}]);
   const[page, setPage] = useState(1);
-  const[numberOfPosts, setNumberOfPosts] = useState(100);
+  const[numberOfPosts, setNumberOfPosts] = useState(1);
   const postPerPage = 23;
 
 
   useEffect(() => {
     // code to run on component mount
-    fetch(`/api/get-posts?page=${page}&posts_per_page=${postPerPage}`).then((response) => {
+    fetch(`/api/get-posts/${page}/${postPerPage}`).then((response) => {
       if (!response.ok){
-        console.log("OH OOHHH")
+        console.log("OH OOHHH")          
       } else {
         response.json().then((data) => {
           setPosts(data["results"]);
           setNumberOfPosts(data["count"]);
-          console.log(data);
+          console.log("HERE")
+          console.log(posts);
+          console.log(numberOfPosts);
         })
       }
     })
@@ -40,14 +42,14 @@ export default function FrontPage(props) {
         response.json().then((data) => {
           setAccount(data);
           setUsername(data.username);
-          console.log(data);
+          //console.log(data);
         })
       }
     })
     // cleanup function to run on component unmount
     return () => {
     };
-  }, [page, postPerPage]);
+  }, [page, postPerPage, numberOfPosts]);
   
 
 
@@ -119,8 +121,7 @@ export default function FrontPage(props) {
           </Typography>
         </Grid>   
         <Grid container justifyContent="center" alignItems="center">
-          <Grid item xs = {12} sm = {3} align = "center" className = "posts-container">
-            {posts.map(post => (<PostCard key = {post.id} {...post} />))}
+          <Grid item xs = {12} sm = {3} align = "center" className = "posts-container">          
           </Grid>
         </Grid>
       </Grid>
@@ -128,3 +129,5 @@ export default function FrontPage(props) {
   );
 
 }
+
+//{posts.map(post => (<PostCard key = {post.id} {...post} />))}

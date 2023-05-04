@@ -176,13 +176,16 @@ class CreatePost(APIView):
         return Response({'error': 'Missing Information'}, status=status.HTTP_400_BAD_REQUEST)
     
 #@api_view(['GET'])
-class PostsList(APIView):
-    #renderer_classes = [JSONRenderer]
+class PostsList(APIView):    
 
     def get(self, request, page, posts_per_page):
         posts = Post.objects.order_by('-created_at')
         paginator = Paginator(posts, posts_per_page)
         paginated_posts = paginator.get_page(page)
         serializer = PostSerializer(paginated_posts, many=True)
-        return Response(serializer.data)
+        response_data = {
+            'count': posts.count(),
+            'results': serializer.data
+        }
+        return Response(response_data)        
 
