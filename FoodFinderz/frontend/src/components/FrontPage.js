@@ -15,7 +15,7 @@ export default function FrontPage(props) {
   const[posts, setPosts] = useState([{}]);
   const[page, setPage] = useState(1);
   const[numberOfPosts, setNumberOfPosts] = useState(1);
-  const postPerPage = 23;
+  const postPerPage = 9;
 
 
   useEffect(() => {
@@ -122,6 +122,7 @@ export default function FrontPage(props) {
         </Grid>   
         <Grid container justifyContent="center" alignItems="center">
           <Grid item xs = {12} sm = {3} align = "center" className = "posts-container">          
+            {posts.map(post => (<PostCard key = {post.id} {...post} />))}
           </Grid>
         </Grid>
       </Grid>
