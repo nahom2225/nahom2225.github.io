@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { Grid, Button, ButtonGroup, Typography, TextField} from '@material-ui/core'
+import { Grid, Button, ButtonGroup, Typography, TextField, FormControlLabel, Checkbox} from '@material-ui/core'
 import {
   BrowserRouter as Router,
   Routes,
@@ -20,6 +20,7 @@ export default function CreateAccount(props) {
     const[error, setError] = useState('');
     const[user_error, setUserError] = useState('');
     const[pass_error, setPassError] = useState('');
+    const[showPassword, setShowPassword] = useState(false);
 
 
 
@@ -91,6 +92,7 @@ export default function CreateAccount(props) {
                 <Grid item xs = {12} align = "center">
                     <TextField
                         error={pass_error}
+                        type = {showPassword ? "test" : "password"}
                         label="Password"
                         placeholder="Enter a Password"
                         value={password}
@@ -98,10 +100,11 @@ export default function CreateAccount(props) {
                         variant="outlined"
                         onChange={handlePasswordChange}
                     />
-                </Grid>
+                </Grid>             
                 <Grid item xs = {12} align = "center">
                     <TextField
                         error={pass_error}
+                        type = {showPassword ? "test" : "password"}
                         label="Retype Password"
                         placeholder="Enter Password Again"
                         value={retypePassword}
@@ -110,6 +113,18 @@ export default function CreateAccount(props) {
                         onChange={handleRetypePasswordChange}
                     />
                 </Grid>
+                <Grid item xs = {12} align = "center">
+                    <FormControlLabel 
+                        control={
+                            <Checkbox
+                            checked={showPassword}
+                            onChange={(event) => setShowPassword(event.target.checked)}
+                            color="primary"
+                            />
+                        }
+                        label="Show Password"
+                    />
+                </Grid>   
                 <Grid item xs = {12} align = "center">
                     <Button
                     color="primary"

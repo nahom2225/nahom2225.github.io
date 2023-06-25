@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { Grid, Button, ButtonGroup, Typography, TextField, Collapse} from '@material-ui/core'
+import { Grid, Button, ButtonGroup, Typography, TextField, Collapse, FormControlLabel, Checkbox, Input} from '@material-ui/core'
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,6 +19,7 @@ export default function Login(props) {
     const[error, setError] = useState('');
     const[user_error, setUserError] = useState('');
     const[pass_error, setPassError] = useState('');
+    const[showPassword, setShowPassword] = useState(false);
 
 
 
@@ -29,6 +30,7 @@ export default function Login(props) {
     function handlePasswordChange () {
         setPassword(event.target.value);
     }
+
 
     const handleAccountButtonPressed = (event) => {
         event.preventDefault();
@@ -65,6 +67,7 @@ export default function Login(props) {
         });
     }
 
+
  return (
     <div className = "center">
         <Grid container spacing = {3}>
@@ -94,12 +97,25 @@ export default function Login(props) {
             <Grid item xs = {12} align = "center">
                 <TextField
                     error={pass_error}
+                    type = {showPassword ? "test" : "password"}
                     label="Password"
                     placeholder="Enter your Password"
                     value={password}
                     helperText={pass_error}
                     variant="outlined"
                     onChange={handlePasswordChange}
+                />
+            </Grid>
+            <Grid item xs = {12} align = "center">
+                <FormControlLabel 
+                    control={
+                    <Checkbox
+                    checked={showPassword}
+                    onChange={(event) => setShowPassword(event.target.checked)}
+                    color="primary"
+                    />
+                    }
+                    label="Show Password"
                 />
             </Grid>
             <Grid item xs = {12} align = "center">

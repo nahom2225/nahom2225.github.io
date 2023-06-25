@@ -15,11 +15,12 @@ export default function PostCard(props) {
     postCard: {
         color: theme.palette.primary.main,
         '&:hover': {
-        backgroundColor: theme.palette.primary.light,
         border: '3px solid #3f51b5',
         borderRadius: '4px',
         boxShadow: 'none'
         },
+        border: '2px solid gray',
+        borderRadius: '10px',
     },
     }));
 
