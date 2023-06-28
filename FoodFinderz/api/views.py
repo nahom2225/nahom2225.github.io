@@ -190,10 +190,10 @@ class PostsList(APIView):
         return Response(response_data)     
 
 class GetPost(APIView):
-    serializer_class = PostSerializer    
+    serializer_class = GetPostSerializer    
     lookup_url_kwarg = 'account_id'
 
-    def post(self, request, format = None):
+    def get(self, request, post_id, format = None):
         account_id = self.request.session[self.lookup_url_kwarg]  
         print(account_id)      
         if account_id != None:
@@ -201,13 +201,20 @@ class GetPost(APIView):
                 self.request.session.create()
 
             serializer = self.serializer_class(data=request.data)
-            if serializer.isValid():
-                post_id = serializer.data.get('post_id')            
-                post = Post.objects.filter(post_id = post_id)
-                if len(post) > 0:
-                    data = AccountSerializer(post[0]).data
-                return Response(data, status = status.HTTP_200_OK)
+            if serializer.is_valid():
+                #post_id = serializer.data.get('post_id')            
+                posts = Post.objects.filter(post_id = post_id)
+                if len(posts) > 0:
+                    data = AccountSerializer(posts[0]).data
+                    return Response(data, status = status.HTTP_200_OK)
+                print("PostId:", post_id)
+                print("NO POSTS")
+                return Response({'Post Not Found': 'No Post Exists.'}, status=status.HTTP_404_NOT_FOUND)                
+            errors = serializer.errors
+            print("PostId:", post_id)
+            print('Serializer errors:', errors)
             return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_409_CONFLICT)
+        print("PostId:", post_id)        
         print("OH OHHH")
         return Response({'Account Not Found': 'Invalid Account Access.'}, status=status.HTTP_404_NOT_FOUND)
 

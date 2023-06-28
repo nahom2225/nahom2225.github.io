@@ -15,7 +15,7 @@ urlpatterns = [
     path('account-in-session', AccountInSession.as_view()),
     path('create-post', CreatePost.as_view()),
     path('get-posts/<int:page>/<int:posts_per_page>', PostsList.as_view()),
-    path('get-post-info', GetPost.as_view())                                                                                                                                                                          
+    path('get-post-info/<int:post_id>', GetPost.as_view())                                                                                                                                                                          
 ]
 
 

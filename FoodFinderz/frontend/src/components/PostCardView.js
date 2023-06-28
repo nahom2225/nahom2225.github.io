@@ -11,16 +11,13 @@ export default function PostCardView(props) {
     const { post_id } = useParams();
 
     useEffect(() => {
-        // code to run on component mount
+        // code to run on component mount        
         console.log(post_id)
         const requestOptions = {
-            method: "POST",
+            method: "GET",
             headers: { "Content-Type": "application/json"},
-            body: JSON.stringify({
-                post_id : post_id,
-            }),
         };
-        fetch("/api/get-post-info", requestOptions)
+        fetch(`/api/get-post-info/${post_id}`, requestOptions)
         .then((response) => {
             if (response.ok) {
                 response.json()
