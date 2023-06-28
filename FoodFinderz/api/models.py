@@ -31,6 +31,7 @@ class Tag(models.Model):
     name = models.CharField(max_length=50)
     
 class Post(models.Model):
+    post_id = models.CharField(max_length = 15, default=generate_unique_id)
     title = models.CharField(max_length=150)
     food = models.CharField(max_length=150)
     location = models.CharField(max_length=150)

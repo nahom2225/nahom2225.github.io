@@ -187,5 +187,27 @@ class PostsList(APIView):
             'count': posts.count(),
             'results': serializer.data
         }
-        return Response(response_data)        
+        return Response(response_data)     
+
+class GetPost(APIView):
+    serializer_class = PostSerializer    
+    lookup_url_kwarg = 'account_id'
+
+    def post(self, request, format = None):
+        account_id = self.request.session[self.lookup_url_kwarg]  
+        print(account_id)      
+        if account_id != None:
+            if not self.request.session.exists(self.request.session.session_key):
+                self.request.session.create()
+
+            serializer = self.serializer_class(data=request.data)
+            if serializer.isValid():
+                post_id = serializer.data.get('post_id')            
+                post = Post.objects.filter(post_id = post_id)
+                if len(post) > 0:
+                    data = AccountSerializer(post[0]).data
+                return Response(data, status = status.HTTP_200_OK)
+            return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_409_CONFLICT)
+        print("OH OHHH")
+        return Response({'Account Not Found': 'Invalid Account Access.'}, status=status.HTTP_404_NOT_FOUND)
 

@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-import { Grid, Button, ButtonGroup, Typography, TextField, AppBar, Toolbar, Card} from '@material-ui/core'
+import { Grid, Button, ButtonGroup, Typography, TextField, AppBar, Toolbar, Card, CardActionArea, CardContent} from '@material-ui/core'
 import {BrowserRouter as Router, Routes, Route, Link, Redirect, Navigate,} from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowBack, ArrowForward } from '@material-ui/icons';
@@ -8,8 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default function PostCard(props) {
 
-
-
+    const navigate = useNavigate();
     
     const useStyles = makeStyles((theme) => ({
     postCard: {
@@ -26,24 +25,32 @@ export default function PostCard(props) {
 
     const classes = useStyles();
 
+    function handleClick() {
+        navigate(`/frontpage/` + props.post_id);
+    } 
+
 
     return(
         <Card className={classes.postCard}>
-            <Typography>
-                Poster: {props.account_poster}
-            </Typography>
-            <Typography>
-                Title: {props.title}
-            </Typography>
-            <Typography>
-                Food: {props.food}
-            </Typography>
-            <Typography>
-                Location: {props.location}
-            </Typography>
-            <Typography>
-                Description: {props.description}
-            </Typography>
+            <CardActionArea onClick = {handleClick}>
+                <CardContent>
+                    <Typography>
+                        Poster: {props.account_poster}
+                    </Typography>
+                    <Typography>
+                        Title: {props.title}
+                    </Typography>
+                    <Typography>
+                        Food: {props.food}
+                    </Typography>
+                    <Typography>
+                        Location: {props.location}
+                    </Typography>
+                    <Typography>
+                        Description: {props.description}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
         </Card>
     )
 

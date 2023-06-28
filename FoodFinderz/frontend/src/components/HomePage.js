@@ -12,6 +12,7 @@ import CreateAccount from "./CreateAccount";
 import FrontPage from "./FrontPage";
 import Login from "./Login";
 import CreatePost from "./CreatePost";
+import PostCardView from "./PostCardView";
 
 export default function Home(props) {
 
@@ -68,6 +69,7 @@ export default function Home(props) {
                 <Route path = '/frontpage' element={<FrontPage clearAccountIdCallback = {(clearAccountId)}/>} />
                 <Route path ='/login' element={<Login/>} />
                 <Route path ='/create-post' element={<CreatePost/>} />
+                <Route path = '/frontpage/:post_id' element={<PostCardView/>} />
             </Routes>
         </Router>
     );

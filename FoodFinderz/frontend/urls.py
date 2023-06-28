@@ -6,5 +6,6 @@ urlpatterns = [
     path('create-account', index),
     path('frontpage', index),
     path('login', index),
-    path('create-post', index)
+    path('create-post', index),
+    path('frontpage/<str:post_id>', index)
 ]
