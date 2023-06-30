@@ -44,14 +44,5 @@ class PostSerializer(serializers.ModelSerializer):
 class GetPostSerializer(serializers.ModelSerializer): 
     class Meta:
         model = Post
-        fields = ('title', 'food', 'location', 'description', 'account_poster')
-        extra_kwargs = {
-            'description': {'required': False},
-            'title': {'required': False},
-            'food': {'required': False},
-            'description': {'required': False},
-            'account_poster': {'required': False},
-            'location': {'required': False},
-            'tags': {'required': False}
-        }
+        fields = ('post_id',)
     

@@ -205,7 +205,7 @@ class GetPost(APIView):
                 #post_id = serializer.data.get('post_id')            
                 posts = Post.objects.filter(post_id = post_id)
                 if len(posts) > 0:
-                    data = AccountSerializer(posts[0]).data
+                    data = PostSerializer(posts[0]).data
                     return Response(data, status = status.HTTP_200_OK)
                 print("PostId:", post_id)
                 print("NO POSTS")
