@@ -39,10 +39,12 @@ class Post(models.Model):
     description = models.CharField(max_length=2000, blank=True, null=True)
     account_poster = models.CharField(max_length=151)
     tags = models.ManyToManyField(Tag)
+    votes = models.IntegerField(null=False, default=0)
     upvotes = models.IntegerField(null=False, default=0)
     downvotes = models.IntegerField(null=False, default=0)
     posted = models.BooleanField(null=False, default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    #votes = upvotes - downvotes
 
 
 class Account(AbstractUser):
@@ -50,7 +52,9 @@ class Account(AbstractUser):
     account_id = models.CharField(max_length = 15, default=generate_unique_id)
     created_at = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
-    posts = models.ManyToManyField(Post)
+    posts = models.ManyToManyField(Post, related_name='posts')
+    upvoted_posts = models.ManyToManyField(Post, related_name='upvoted_posts')
+    downvoted_posts = models.ManyToManyField(Post, related_name='downvoted_posts')    
     groups = models.ManyToManyField(
         Group,
         related_name='account_groups',

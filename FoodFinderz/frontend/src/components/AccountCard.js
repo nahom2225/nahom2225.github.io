@@ -49,12 +49,17 @@ function AccountCard(props) {
                         {props.username}
                     </Typography>
                 </Grid>
-                <Grid item align = "center" xs = {6}>
-                    <IconButton onClick={() => {props.frontpage ? navigate('/create-post') : navigate('/frontpage')}} className = {classes.logoutButton}>
-                        {props.frontpage ? <CreateIcon color="success"/> : <HomeIcon color = "success"/>}
+                <Grid item align = "center" xs = {4}>
+                    <IconButton onClick={() => {navigate('/frontpage')}} className = {classes.logoutButton}>
+                        <HomeIcon color = "success"/>
                     </IconButton>
                 </Grid>
-                <Grid item align = "center" xs = {6}>
+                <Grid item align = "center" xs = {4}>
+                    <IconButton onClick={() => {navigate('/create-post')}} className = {classes.logoutButton}>
+                        <CreateIcon color="success"/>
+                    </IconButton>
+                </Grid>
+                <Grid item align = "center" xs = {4}>
                     <IconButton onClick={handleLogout} className = {classes.logoutButton}>
                         <ExitToAppIcon color="success"/>
                     </IconButton>

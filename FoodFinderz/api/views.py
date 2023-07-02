@@ -217,4 +217,41 @@ class GetPost(APIView):
         print("PostId:", post_id)        
         print("OH OHHH")
         return Response({'Account Not Found': 'Invalid Account Access.'}, status=status.HTTP_404_NOT_FOUND)
+    
+class Vote(APIView):
+    serializer_class = GetPostSerializer    
+    lookup_url_kwarg = 'account_id'    
+
+    def post(self, request, upvote, format = None):        
+        serializer = self.serializer_class(data=request.data)
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()                
+        account_id = request.session.get('account_id')
+        if serializer.is_valid():
+            if account_id is not None:
+                account = Account.objects.filter(account_id = account_id)
+                account = account[0]
+                post_id = serializer.data.get('post_id')
+                post = Post.objects.filter(post_id = post_id)
+                post = post[0]
+                if account is not None and post_id is not None:
+                    if upvote:
+                        post.upvotes += 1
+                        post.votes += 1
+                        account.upvoted_posts.add(post)
+                        account.save(update_fields=['upvoted_posts'])
+                        post.save(update_fields=['upvotes', 'votes'])
+                    else:
+                        post.downvotes += 1
+                        post.votes -= 1
+                        account.downvoted_posts.add(post)
+                        account.save(update_fields=['downvoted_posts'])
+                        post.save(update_fields=['downvotes', 'votes'])
+                    data = {'votes': post.votes}
+                    return JsonResponse(data, status=status.HTTP_200_OK)
+                else:
+                    return Response({'Account Not Found': 'Invalid Account Access.'}, status=status.HTTP_404_NOT_FOUND)    
+            else:
+                return Response({'Account Not Found': 'Invalid Account Access.'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_409_CONFLICT)
 
