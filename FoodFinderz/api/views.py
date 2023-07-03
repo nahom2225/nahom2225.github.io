@@ -134,6 +134,15 @@ class MyLogoutView(APIView):
             #account = Account.objects.filter(accountId)
             #account.account_id = None
             #account.save(update_fields=['account_id'])
+            
+            # Reset upvotes, downvotes, and votes count for all posts
+            Post.objects.all().update(upvotes=0, downvotes=0, votes=0)
+
+            # Clear upvoted_posts and downvoted_posts for all accounts
+            for account in Account.objects.all():
+                account.upvoted_posts.clear()
+                account.downvoted_posts.clear()            
+
             self.request.session[self.lookup_url_kwarg] = None
             logout(request)
             return redirect('home')
@@ -236,17 +245,27 @@ class Vote(APIView):
                 post = post[0]
                 if account is not None and post_id is not None:
                     if upvote:
-                        post.upvotes += 1
-                        post.votes += 1
-                        account.upvoted_posts.add(post)
-                        account.save(update_fields=['upvoted_posts'])
-                        post.save(update_fields=['upvotes', 'votes'])
-                    else:
-                        post.downvotes += 1
-                        post.votes -= 1
-                        account.downvoted_posts.add(post)
-                        account.save(update_fields=['downvoted_posts'])
-                        post.save(update_fields=['downvotes', 'votes'])
+                        post.upvotes += int(post not in account.upvoted_posts.all())
+                        post.downvotes -= int(post in account.downvoted_posts.all())
+                        post.votes = post.votes + (int(post not in account.upvoted_posts.all()) + int(post in account.downvoted_posts.all())) - (int(post in account.upvoted_posts.all()))
+                        if post not in account.upvoted_posts.all():
+                            account.upvoted_posts.add(post)
+                        else:
+                            account.upvoted_posts.remove(post)
+                        account.downvoted_posts.remove(post)
+                        account.save()
+                        post.save(update_fields=['upvotes', 'votes', 'downvotes'])
+                    elif not upvote:
+                        post.downvotes += int(post not in account.downvoted_posts.all())
+                        post.upvotes -= int(post in account.upvoted_posts.all())
+                        post.votes = post.votes - (int(post not in account.downvoted_posts.all()) + int(post in account.upvoted_posts.all())) + (int(post in account.downvoted_posts.all()))
+                        if post not in account.downvoted_posts.all():
+                            account.downvoted_posts.add(post)
+                        else:
+                            account.downvoted_posts.remove(post)
+                        account.upvoted_posts.remove(post)
+                        account.save()
+                        post.save(update_fields=['downvotes', 'votes', 'upvotes'])
                     data = {'votes': post.votes}
                     return JsonResponse(data, status=status.HTTP_200_OK)
                 else:
