@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
 import { Grid, ButtonGroup, Typography, TextField, AppBar, Toolbar, Card, IconButton, LinearProgress, Box, Collapse} from '@material-ui/core'
 import {BrowserRouter as Router, Routes, Route, Link, Redirect, Navigate } from "react-router-dom";
+import Autocomplete from 'react-google-autocomplete';
 import { useParams, useNavigate } from "react-router-dom";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CreateIcon from '@material-ui/icons/Create';
@@ -10,19 +11,21 @@ import AccountCard from "./AccountCard";
 import Divider from '@mui/material/Divider'
 import Button from "@mui/material/Button";
 import Alert from "@material-ui/lab/Alert";
+import { Title } from "@material-ui/icons";
+import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 
 export default function CreatePost(props) {
 
     const navigate = useNavigate();
 
-    const[username, setUsername] = useState('');
-    const[account, setAccount] = useState({});
-    const[title, setTitle] = useState("");
-    const[food, setFood] = useState("");
-    const[location, setLocation] = useState("");
-    const[description, setDescription] = useState("");
-    const[error, setError] = useState("");
-  
+    const [username, setUsername] = useState('');
+    const [account, setAccount] = useState({});
+    const [title, setTitle] = useState("");
+    const [food, setFood] = useState("");
+    const [locationData, setLocationData] = useState({});
+    const [description, setDescription] = useState("");
+    const [error, setError] = useState("");
+    const [locationOptions, setLocationOptions] = useState([]);
   
     useEffect(() => {
       // code to run on component mount
@@ -48,10 +51,10 @@ export default function CreatePost(props) {
         transitionDuration: '0.3s',
     }
 
-    function handleCreatePostButtonPressed() {
+    function handleCreatePostButtonPressed() {        
         console.log('title:', title);
         console.log('food:', food);
-        console.log('location:', location);
+        console.log('location:', locationData.label);
         console.log('description:', description);
         console.log('username:', username);
         const requestOptions = {
@@ -60,7 +63,7 @@ export default function CreatePost(props) {
             body: JSON.stringify({
                 title : title, 
                 food : food,
-                location : location,
+                location : locationData.label,
                 description : description,
                 account_poster : username,                
             }),
@@ -118,7 +121,7 @@ export default function CreatePost(props) {
                 <Grid item xs = {12} > 
                     <Card className = "card">
                         <Grid container style = {{ gap : 10 }}>
-                            <Grid item xs = {9}>
+                            <Grid item xs = {12}>
                                 <TextField
                                     error={null}
                                     label=""
@@ -126,13 +129,14 @@ export default function CreatePost(props) {
                                     value={title}
                                     helperText={null}
                                     variant="outlined"
-                                    onChange={(e) => {setTitle(e.target.value)}}
+                                    onChange={(e) => {setTitle(e.target.value)
+                                                    console.log(locationData.label);}}
                                     inputProps={{
                                         style: {
-                                            width: "550px",
+                                            width: "600px",                                            
                                         },
                                         maxLength: 50
-                                        }}                                        
+                                        }}
                                 />
                                 <Typography variant = "h6">
                                 {title.length} / 50
@@ -158,25 +162,14 @@ export default function CreatePost(props) {
                                 {food.length} / 50
                                 </Typography>
                             </Grid>
-                            <Grid item xs = {12}>
-                                <TextField
-                                    error={null}
-                                    label=""
-                                    placeholder="Location"
-                                    value={location}
-                                    helperText={null}
-                                    variant="outlined"
-                                    onChange={(e) => {setLocation(e.target.value)}}
-                                    inputProps={{
-                                        style: {
-                                            width: "600px",                                            
-                                        },
-                                        maxLength: 50
+                            <Grid item xs = {9}>
+                                <GooglePlacesAutocomplete
+                                    apiKey = "AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY"
+                                        selectProps={{
+                                            locationData,
+                                            onChange: setLocationData,
                                         }}
-                                />
-                                <Typography variant = "h6">
-                                {location.length} / 50
-                                </Typography>
+                                    />
                             </Grid>
                             <Grid item xs = {12}>
                                 <TextField
@@ -220,3 +213,41 @@ export default function CreatePost(props) {
         </div>
       );
 }
+
+/**
+<TextField
+error={null}
+label=""
+placeholder="Title"
+value={title}
+helperText={null}
+variant="outlined"
+onChange={(e) => {setTitle(e.target.value)}}
+inputProps={{
+    style: {
+        width: "550px",
+    },
+    maxLength: 50
+    }}                                        
+/>
+**/
+
+/**
+<Autocomplete
+    options={locationOptions}
+    getOptionLabel={(option) => option.description}
+    inputValue={location}
+    onChange={(event, value) => {
+        handleLocationInputChange(event, value);}}
+    renderInput={(params) => (<TextField {...params} label="Location" variant="outlined" />)}
+    renderOption={(option) => <Typography>{option.description}</Typography>}
+/>
+{error && (
+    <Alert severity="error" onClose={() => setError("")}>
+        {error}
+    </Alert>
+    )}
+    <Typography variant = "h6">
+    {title.length} / 50
+    </Typography>
+**/

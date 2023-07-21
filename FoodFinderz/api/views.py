@@ -136,12 +136,12 @@ class MyLogoutView(APIView):
             #account.save(update_fields=['account_id'])
             
             # Reset upvotes, downvotes, and votes count for all posts
-            Post.objects.all().update(upvotes=0, downvotes=0, votes=0)
+            # Post.objects.all().update(upvotes=0, downvotes=0, votes=0)
 
             # Clear upvoted_posts and downvoted_posts for all accounts
-            for account in Account.objects.all():
-                account.upvoted_posts.clear()
-                account.downvoted_posts.clear()            
+            # for account in Account.objects.all():
+                # account.upvoted_posts.clear()
+                # account.downvoted_posts.clear()            
 
             self.request.session[self.lookup_url_kwarg] = None
             logout(request)
@@ -182,6 +182,8 @@ class CreatePost(APIView):
                 account = Account.objects.get(username=account_poster)
                 account.posts.add(post)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+        errors = serializer.errors
+        print(errors)
         return Response({'error': 'Missing Information'}, status=status.HTTP_400_BAD_REQUEST)
     
 #@api_view(['GET'])
@@ -266,11 +268,35 @@ class Vote(APIView):
                         account.upvoted_posts.remove(post)
                         account.save()
                         post.save(update_fields=['downvotes', 'votes', 'upvotes'])
-                    data = {'votes': post.votes}
+                    data = {'votes': post.votes, 'upvote': post in account.upvoted_posts.all() , 'downvote' : post in account.downvoted_posts.all()}
                     return JsonResponse(data, status=status.HTTP_200_OK)
                 else:
                     return Response({'Account Not Found': 'Invalid Account Access.'}, status=status.HTTP_404_NOT_FOUND)    
             else:
                 return Response({'Account Not Found': 'Invalid Account Access.'}, status=status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_409_CONFLICT)
+    
+class VoteCheck(APIView):
+    serializer_class = GetPostSerializer    
+    lookup_url_kwarg = 'account_id'   
+
+    def get(self, request, post_id, format = None):
+        if not self.request.session.exists(self.request.session.session_key):
+                self.request.session.create()
+        account_id = self.request.session[self.lookup_url_kwarg]  
+        print(account_id)      
+        if account_id != None:
+            account = Account.objects.filter(account_id = account_id)
+            account = account[0]
+            serializer = self.serializer_class(data=request.data)
+            if serializer.is_valid():
+                #post_id = serializer.data.get('post_id')            
+                posts = Post.objects.filter(post_id = post_id)
+                if len(posts) > 0:
+                    post = posts[0]
+                    data = {'upvote': post in account.upvoted_posts.all() , 'downvote' : post in account.downvoted_posts.all()}
+                    return JsonResponse(data, status=status.HTTP_200_OK)
+                return Response({'Post Not Found': 'No Post Exists.'}, status=status.HTTP_404_NOT_FOUND)                
+            return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_409_CONFLICT)
+        return Response({'Account Not Found': 'Invalid Account Access.'}, status=status.HTTP_404_NOT_FOUND)
 

@@ -34,7 +34,7 @@ class Post(models.Model):
     post_id = models.CharField(max_length = 15, default=generate_unique_id)
     title = models.CharField(max_length=150)
     food = models.CharField(max_length=150)
-    location = models.CharField(max_length=150)
+    location = models.CharField(max_length=200)
     current_session = models.CharField(max_length=50, default="")
     description = models.CharField(max_length=2000, blank=True, null=True)
     account_poster = models.CharField(max_length=151)

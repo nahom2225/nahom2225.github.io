@@ -3,6 +3,7 @@ import { Grid, Typography, Card, CardActionArea, CardContent, IconButton } from 
 import { ArrowUpward, ArrowDownward } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { green, red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
     postCard: {
@@ -35,12 +36,18 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.light,
         },
     },
+    upVoteButtonClick: {
+        color: 'green'
+    },
     downVoteButton: {
         color: theme.palette.primary.main,
         '&:hover': {
         backgroundColor: theme.palette.secondary.light,
         },
-    }
+    },
+    downVoteButtonClick: {
+        color: 'red'
+    },
 }));
 
 export default function PostCard(props) {
@@ -48,10 +55,25 @@ export default function PostCard(props) {
   const classes = useStyles();
 
   const[votes, setVotes] = useState(props.votes)
+  const[upvote, setUpvote] = useState(false)
+  const[downvote, setDownvote] = useState(false)
 
   useEffect(() => {
     // code to run on component mount
-
+    const requestOptions = {
+        method: "GET",
+        headers: { "Content-Type": "application/json"},
+    };
+    fetch(`/api/get-post-vote/${props.post_id}`, requestOptions).
+    then((response) => {
+        if (!response.ok){
+          console.log("OH OOHHH")          
+        } else {
+          response.json().then((data) => {
+            setUpvote(data["upvote"]);
+            setDownvote(data["downvote"]);
+          })
+        }})
     // cleanup function to run on component unmount
     return () => {
     };
@@ -76,6 +98,8 @@ export default function PostCard(props) {
         } else {
           response.json().then((data) => {
             setVotes(data["votes"]);
+            setUpvote(data["upvote"]);
+            setDownvote(data["downvote"]);
           })
         }})
   }
@@ -95,6 +119,8 @@ export default function PostCard(props) {
         } else {
           response.json().then((data) => {
             setVotes(data["votes"]);
+            setUpvote(data["upvote"]);
+            setDownvote(data["downvote"]);
           })
         }})
   }
@@ -103,11 +129,11 @@ export default function PostCard(props) {
     <Card className={classes.postCard}>
       <Grid container>
         <Grid item xs = {2} className={classes.voteContainer}>
-          <IconButton onClick={handleUpVote} className = {classes.upVoteButton}>
+          <IconButton onClick={handleUpVote} className = {upvote ? classes.upVoteButtonClick : classes.upVoteButton}>
             <ArrowUpward />
           </IconButton>
           <Typography>{votes}</Typography>
-          <IconButton onClick={handleDownVote} className = {classes.downVoteButton}>
+          <IconButton onClick={handleDownVote} className = {downvote ? classes.downVoteButtonClick : classes.downVoteButton}>
             <ArrowDownward />
           </IconButton>
         </Grid>
