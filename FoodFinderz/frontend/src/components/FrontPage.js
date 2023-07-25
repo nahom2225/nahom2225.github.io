@@ -6,18 +6,21 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowBack, ArrowForward } from '@material-ui/icons';
 import AccountCard from "./AccountCard";
 import PostCard from "./PostCard";
+import Geocode from "react-geocode";
 
 export default function FrontPage(props) {
     
   const navigate = useNavigate();
 
-  const[username, setUsername] = useState('');
-  const[account, setAccount] = useState({});
-  const[posts, setPosts] = useState([{}]);
-  const[page, setPage] = useState(1);
-  const[numberOfPosts, setNumberOfPosts] = useState(1);
-  const [postPerPage, setPostPerPage] = useState(9);
+  const [username, setUsername] = useState('');
+  const [account, setAccount] = useState({});
+  const [posts, setPosts] = useState([{}]);
+  const [page, setPage] = useState(1);
+  const [locations, setLocations] = useState([]);
+  const [numberOfPosts, setNumberOfPosts] = useState(1);
+  const [postPerPage, setPostPerPage] = useState(5);
 
+  Geocode.setApiKey("AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY");
 
   useEffect(() => {
     // code to run on component mount
@@ -52,27 +55,38 @@ export default function FrontPage(props) {
     };
   }, [page, postPerPage, numberOfPosts]);
   
-
-
-  const handleNextPage = () => {
-    setPage(page + 1 > Math.ceil(numberOfPosts/postPerPage) ? Math.ceil(numberOfPosts/postPerPage) : page + 1);
-  }
-
-  const handlePrevPage = () => {
-    setPage(page - 1 <= 0 ? 1 : page - 1);
-  }
+    // Geocode the addresses from the posts
+    const geocodeAddresses = async () => {
+      const geocodedPosts = [];
   
-  const MapContainer = ({ google, posts }) => {
-    const mapStyles = {
-      width: "100%",
-      height: "300px",
+      for (const post of posts) {
+        try {
+          const response = await Geocode.fromAddress(post.location);
+          const { lat, lng } = response.results[0].geometry.location;
+          geocodedPosts.push({ lat, lng });
+        } catch (error) {
+          console.error("Error geocoding address:", error);
+        }
+      }
+  
+      return geocodedPosts;
     };
   
-    // Extract the locations from the posts
-    const locations = posts.map((post) => ({
-      lat: post.location.latitude,
-      lng: post.location.longitude,
-    }));
+    useEffect(() => {
+      const updateLocations = async () => {
+        const coords = await geocodeAddresses();
+        setLocations(coords);
+      };
+  
+      updateLocations();
+    }, [posts]);
+
+  const MapContainer = ({ google, posts }) => {
+    const mapStyles = {
+      width: "50%",
+      height: "50%",
+    };
+
   
     return (
       <Map google={google} zoom={10} style={mapStyles} initialCenter={locations[0]}>
@@ -82,11 +96,20 @@ export default function FrontPage(props) {
       </Map>
     );
   };
+  
 
   const WrappedMapContainer = GoogleApiWrapper({
     apiKey: "AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY",
   })(MapContainer);
   
+  
+  const handleNextPage = () => {
+    setPage(page + 1 > Math.ceil(numberOfPosts/postPerPage) ? Math.ceil(numberOfPosts/postPerPage) : page + 1);
+  }
+
+  const handlePrevPage = () => {
+    setPage(page - 1 <= 0 ? 1 : page - 1);
+  }
 
   return (
     <Grid container>
@@ -120,7 +143,7 @@ export default function FrontPage(props) {
               labelId="Posts Per Page"
               value={postPerPage}
               onChange={(e => setPostPerPage(e.target.value))}>
-                <MenuItem value="5"> 1 </MenuItem>
+                <MenuItem value="5"> 5 </MenuItem>
                 <MenuItem value="10"> 10 </MenuItem>
                 <MenuItem value="25"> 25 </MenuItem>
             </Select>
@@ -132,10 +155,10 @@ export default function FrontPage(props) {
           </Typography>
         </Grid>   
         <Grid container justifyContent="center" alignItems="center">
-          <Grid item xs = {6} sm = {3} align = "center">
+          <Grid item xs={12} sm={6} align="right" className="google-maps">
             <WrappedMapContainer posts={posts} />
           </Grid>
-          <Grid item xs = {6} sm = {3} align = "center" className = "posts-container">          
+          <Grid item xs={6} sm={3} align="left" className="posts-container">          
             {posts.map(post => (<PostCard key = {post.id} {...post} />))}
           </Grid>
         </Grid>

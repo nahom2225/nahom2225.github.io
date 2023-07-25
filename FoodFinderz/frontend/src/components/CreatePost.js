@@ -130,7 +130,7 @@ export default function CreatePost(props) {
                                     helperText={null}
                                     variant="outlined"
                                     onChange={(e) => {setTitle(e.target.value)
-                                                    console.log(locationData.label);}}
+                                                    console.log(locationData);}}
                                     inputProps={{
                                         style: {
                                             width: "600px",                                            

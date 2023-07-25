@@ -48,6 +48,7 @@ right: 2%;
 
 .posts-container {
     background-color: #f7f7f7;
+    justify-content: right;
     overflow-y: scroll;
     height: 400px;
   }
@@ -66,4 +67,10 @@ right: 2%;
     top: 13%;
     left: auto;
     white-space: nowrap;
+  }
+
+  .google-maps {
+    display: flex;
+    justify-content: left;
+    align-items: center;
   }
