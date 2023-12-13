@@ -17,7 +17,7 @@ function AccountCard(props) {
 
     const useStyles = makeStyles((theme) => ({
     logoutButton: {
-        color: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
         '&:hover': {
         backgroundColor: theme.palette.primary.light,
         },
@@ -42,30 +42,28 @@ function AccountCard(props) {
     };
 
     return(
-        <Card style={{width: '300px', height: '100%', right: 3}}>
-            <Grid container alignItems = "center">
-                <Grid item align = "center" xs = {12}>
-                    <Typography>
-                        {props.username}
-                    </Typography>
-                </Grid>
-                <Grid item align = "center" xs = {4}>
-                    <IconButton onClick={() => {navigate('/frontpage')}} className = {classes.logoutButton}>
-                        <HomeIcon color = "success"/>
-                    </IconButton>
-                </Grid>
-                <Grid item align = "center" xs = {4}>
-                    <IconButton onClick={() => {navigate('/create-post')}} className = {classes.logoutButton}>
-                        <CreateIcon color="success"/>
-                    </IconButton>
-                </Grid>
-                <Grid item align = "center" xs = {4}>
-                    <IconButton onClick={handleLogout} className = {classes.logoutButton}>
-                        <ExitToAppIcon color="success"/>
-                    </IconButton>
-                </Grid>
+        <Grid container alignItems = "center" className = "nav-buttons">
+            <Grid item align = "center" xs = {12}>
+                <Typography>
+                    User: {props.username}
+                </Typography>
             </Grid>
-        </Card>
+            <Grid item align = "center" xs = {4}>
+                <IconButton onClick={() => {navigate('/frontpage')}} className = {classes.logoutButton}>
+                    <HomeIcon color = "success"/>
+                </IconButton>
+            </Grid>
+            <Grid item align = "center" xs = {4}>
+                <IconButton onClick={() => {navigate('/create-post')}} className = {classes.logoutButton}>
+                    <CreateIcon color="success"/>
+                </IconButton>
+            </Grid>
+            <Grid item align = "center" xs = {4}>
+                <IconButton onClick={handleLogout} className = {classes.logoutButton}>
+                    <ExitToAppIcon color="success"/>
+                </IconButton>
+            </Grid>
+        </Grid>
     )
 
 }

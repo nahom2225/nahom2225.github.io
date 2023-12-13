@@ -26,6 +26,7 @@ export default function PostCardView(props) {
     const classes = useStyles();
     const[account, setAccount] = useState({});
 
+    const navigate = useNavigate();
 
     useEffect(() => {
         // code to run on component mount        
@@ -72,6 +73,25 @@ export default function PostCardView(props) {
         };
       }, [post_id]);
 
+      function deletePost () {
+        const requestOptions = {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json"},
+          body: JSON.stringify({
+              post_id : post.post_id               
+          }),
+        };
+        fetch(`/api/delete-post`, requestOptions).
+        then((response) => {
+            if (!response.ok){
+              console.log("OH OOHHH")          
+            } else {
+              console.log("deleted")
+              navigate(`/frontpage`)
+              }})
+        }
+        
+
       return (
     <Grid container>
         <AppBar position="static">
@@ -106,6 +126,15 @@ export default function PostCardView(props) {
             <Grid item xs={12} className={classes.item}>
                 <Typography className={classes.label}>Description:</Typography>
                 <Typography>{post.description}</Typography>
+            </Grid>
+            <Grid item xs={12} className={classes.item}>
+            <Button
+                color="primary"
+                variant="contained"
+                onClick={deletePost}
+                >
+                    Delete
+                </Button>
             </Grid>
         </Grid>
     </Grid>

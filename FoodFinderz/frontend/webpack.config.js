@@ -11,18 +11,23 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        //exclude: /node_modules/,
         use: {
           loader: "babel-loader",
         },
       },
+      {
+        test: /\.(sass|css)$/,
+        use: ['style-loader', 'css-loader']
+      }
     ],
   },
+  /*
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
+        //exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -32,6 +37,7 @@ module.exports = {
       },
     ],
   },
+  */
   optimization: {
     minimize: true,
   },

@@ -15,6 +15,7 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
 from rest_framework.renderers import JSONRenderer
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 
 
@@ -299,4 +300,19 @@ class VoteCheck(APIView):
                 return Response({'Post Not Found': 'No Post Exists.'}, status=status.HTTP_404_NOT_FOUND)                
             return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_409_CONFLICT)
         return Response({'Account Not Found': 'Invalid Account Access.'}, status=status.HTTP_404_NOT_FOUND)
+    
+class DeletePost(RetrieveUpdateDestroyAPIView):
+    serializer_class = GetPostSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            post_id = serializer.data.get('post_id')
+            post = Post.objects.filter(post_id=post_id).first()
+            if post:
+                post.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        
 

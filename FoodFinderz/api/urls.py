@@ -17,7 +17,8 @@ urlpatterns = [
     path('get-posts/<int:page>/<int:posts_per_page>', PostsList.as_view()),
     path('get-post-info/<str:post_id>', GetPost.as_view()),
     path('post-vote/<int:upvote>', Vote.as_view()),
-    path('get-post-vote/<str:post_id>', VoteCheck.as_view())                                                                                                                                                                          
+    path('get-post-vote/<str:post_id>', VoteCheck.as_view()),
+    path('delete-post', DeletePost.as_view())                                                                                                                                                                     
 ]
 
 
