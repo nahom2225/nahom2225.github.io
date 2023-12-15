@@ -48,7 +48,7 @@ right: 2%;
 
 div.post-control {
   margin-top: 1%;
-  margin-right: 11%;
+  margin-right: 9%;
 }
 
 .posts-container {
@@ -77,23 +77,26 @@ div.post-control {
   white-space: nowrap;
 }
 
-.google-maps {
-}
 
 .map-posts-container {
   display: flex;
   justify-content: space-between;
 }
 
-.posts-per-page {
-  width: 101%;
-}
-
-.arrow-buttons {
-  box-shadow: -5px 5px 10px;
-}
 
 .nav-buttons {
   width: 25% !important;
   margin-right: 6%;
+}
+
+
+.page-link:hover {
+  cursor: pointer !important;
+}
+
+.page-link.active, .active > .page-link {
+  cursor: auto !important;
+}
+.page-link.disabled, .disabled > .page-link {
+  cursor: auto !important;
 }

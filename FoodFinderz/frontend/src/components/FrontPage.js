@@ -20,6 +20,7 @@ export default function FrontPage(props) {
   const [locations, setLocations] = useState([]);
   const [numberOfPosts, setNumberOfPosts] = useState(1);
   const [postPerPage, setPostPerPage] = useState(5);
+  const [pageOffset, setPageOffset] = useState(0);
 
   Geocode.setApiKey("AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY");
 
@@ -27,14 +28,12 @@ export default function FrontPage(props) {
     // code to run on component mount
     fetch('/api/get-account').then((response) => {
       if (!response.ok){
-        console.log("OH OOHHH")
         props.clearAccountIdCallback();
         navigate("/");
       } else {
         response.json().then((data) => {
           setAccount(data);
           setUsername(data.username);
-          //console.log(data);
         })
       }
     })
@@ -46,8 +45,7 @@ export default function FrontPage(props) {
   useEffect(() => {
     // code to run on component mount
     fetch(`/api/get-posts/${page}/${postPerPage}`).then((response) => {
-      if (!response.ok){
-        console.log("OH OOHHH")          
+      if (!response.ok){    
       } else {
         response.json().then((data) => {
           setPosts(data["results"]);
@@ -62,19 +60,54 @@ export default function FrontPage(props) {
     const nextLink = document.getElementById("next")
     if (page == 1) {
       prevLink.classList.add('disabled')
-    } else if (disabled in prevLink.classList) {
+    } else if (prevLink.classList.contains("disabled")) {
       prevLink.classList.remove('disabled')
     }
 
     if (page == Math.ceil(numberOfPosts/postPerPage)) {
+      console.log("Next link is disabled")
+      console.log(numberOfPosts)
+      console.log("No way")
       nextLink.classList.add('disabled')
-    } else if (disabled in nextLink.classList) {
+    } else if (nextLink.classList.contains("disabled")) {
+      console.log("Next link not disabled")
+      console.log(Math.ceil(numberOfPosts/postPerPage))
+      console.log(page)
+      console.log(numberOfPosts)
+      console.log(postPerPage)
       nextLink.classList.remove('disabled')
     }
     // cleanup function to run on component unmount
     return () => {
     };
   }, [page, postPerPage, numberOfPosts]);
+
+  useEffect(() => {
+    const pageFirst = document.getElementById("first");
+    const pageSecond = document.getElementById("second");
+    const pageThird = document.getElementById("third");
+  
+    switch (page) {
+      case parseInt(pageFirst.innerText):
+        pageFirst.classList.add("active");
+        pageSecond.classList.remove("active");
+        pageThird.classList.remove("active");
+        break;
+      case parseInt(pageSecond.innerText):
+        pageFirst.classList.remove("active");
+        pageSecond.classList.add("active");
+        pageThird.classList.remove("active");
+        break;
+      case parseInt(pageThird.innerText):
+        pageFirst.classList.remove("active");
+        pageSecond.classList.remove("active");
+        pageThird.classList.add("active");
+        break;
+      default:
+        break;
+    }
+  }, [page]);
+
   
     // Geocode the addresses from the posts
     const geocodeAddresses = async () => {
@@ -160,10 +193,22 @@ export default function FrontPage(props) {
 
   
   const handleNextPage = () => {
+    const pageFirst = document.getElementById("first");
+    const pageSecond = document.getElementById("second");
+    const pageThird = document.getElementById("third");
+    if (page - 2 == parseInt(pageFirst.innerText)) {
+      setPageOffset(pageOffset + 1);
+    }
     setPage(page + 1 > Math.ceil(numberOfPosts/postPerPage) ? Math.ceil(numberOfPosts/postPerPage) : page + 1);
   }
 
   const handlePrevPage = () => {
+    const pageFirst = document.getElementById("first");
+    const pageSecond = document.getElementById("second");
+    const pageThird = document.getElementById("third");
+    if (page + 2 == parseInt(pageThird.innerText)) {
+      setPageOffset(pageOffset - 1);
+    }
     setPage(page - 1 <= 0 ? 1 : page - 1);
   }
 
@@ -176,19 +221,22 @@ export default function FrontPage(props) {
         document.getElementById(other_id).classList.remove("active");
       }
     }
-    document.getElementById(id).classList.add("active");
+    const pageClicked = document.getElementById(id);
+    const page = parseInt(pageClicked.innerText);
+    setPage(page)
+    pageClicked.classList.add("active");
   };
 
   return (
     <Grid container>
       <AppBar position="static">
         <Grid container>
-          <Grid item xs = {12}>
+          <Grid item xs = {6}>
             <Toolbar>
               <Typography variant="h4">Food Finderz</Typography>
             </Toolbar>
           </Grid>
-          <Grid item xs={12} align="right">
+          <Grid item xs={6} align="right">
             <AccountCard frontpage = {true} {...account}/>
           </Grid>
         </Grid>
@@ -201,13 +249,13 @@ export default function FrontPage(props) {
                 <a className="page-link" onClick={handlePrevPage}>Previous</a>
               </li>
               <li id="first" className="page-item active">
-                <a className="page-link" onClick={() => handleActive("first")}>1</a>
+                <a className="page-link" onClick={() => handleActive("first")}>{1 + pageOffset}</a>
               </li>
               <li id="second" className="page-item">
-                <a className="page-link" onClick={() => handleActive("second")}>2</a>
+                <a className="page-link" onClick={() => handleActive("second")}>{2 + pageOffset}</a>
               </li>
               <li id="third" className="page-item">
-                <a className="page-link" onClick={() => handleActive("third")}>3</a>
+                <a className="page-link" onClick={() => handleActive("third")}>{3 + pageOffset}</a>
               </li>
               <li id="next" className="page-item">
                 <a className="page-link" onClick={handleNextPage}>Next</a>
