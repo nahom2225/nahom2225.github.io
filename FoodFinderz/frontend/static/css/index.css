@@ -2,6 +2,8 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background-image: url(FoodFinderz\images\pexels-rodion-kutsaiev-4664463.jpg);
+    background-size: cover;
 }
 
 #main {
@@ -54,8 +56,8 @@ div.post-control {
 .posts-container {
   background-color: #f7f7f7;
   overflow-y: scroll;
-  height: 65%;
-  width: 58% !important; /* Adjust this value */
+  height: 100%;
+  width: 58% !important; 
   box-shadow: -5px 5px 10px;
   margin-right: 2% !important;
   border-radius: 4%;
@@ -99,4 +101,22 @@ div.post-control {
 }
 .page-link.disabled, .disabled > .page-link {
   cursor: auto !important;
+}
+
+.hidden {
+  display: None;
+}
+
+.page-link {
+  caret-color: transparent !important;
+}
+
+#map {
+  width: 120%; 
+  height: 100%; 
+  min-height: 65%;
+  margin: 0 auto; 
+  display: block;
+  border-radius: 4%;
+  box-shadow: -5px 5px 10px;
 }

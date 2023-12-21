@@ -7,6 +7,7 @@ import { ArrowBack, ArrowForward } from '@material-ui/icons';
 import AccountCard from "./AccountCard";
 import PostCard from "./PostCard";
 import Geocode from "react-geocode";
+import { Loader } from "@googlemaps/js-api-loader"
 import { DisabledByDefaultRounded } from "@mui/icons-material";
 
 export default function FrontPage(props) {
@@ -43,44 +44,41 @@ export default function FrontPage(props) {
   }, []);
 
   useEffect(() => {
-    // code to run on component mount
-    fetch(`/api/get-posts/${page}/${postPerPage}`).then((response) => {
-      if (!response.ok){    
-      } else {
-        response.json().then((data) => {
-          setPosts(data["results"]);
-          setNumberOfPosts(data["count"]);
-          console.log("HERE")
-          console.log(posts);
-          console.log(numberOfPosts);
-        })
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/get-posts/${page}/${postPerPage}`);
+        if (!response.ok) {
+          // Handle error if needed
+          console.error("Error fetching posts");
+          return;
+        }
+  
+        const data = await response.json();
+        setPosts(data.results);
+        setNumberOfPosts(data.count);
+      } catch (error) {
+        console.error("Error fetching and processing posts data", error);
       }
-    })
-    const prevLink = document.getElementById("prev")
-    const nextLink = document.getElementById("next")
-    if (page == 1) {
-      prevLink.classList.add('disabled')
-    } else if (prevLink.classList.contains("disabled")) {
-      prevLink.classList.remove('disabled')
-    }
-
-    if (page == Math.ceil(numberOfPosts/postPerPage)) {
-      console.log("Next link is disabled")
-      console.log(numberOfPosts)
-      console.log("No way")
-      nextLink.classList.add('disabled')
-    } else if (nextLink.classList.contains("disabled")) {
-      console.log("Next link not disabled")
-      console.log(Math.ceil(numberOfPosts/postPerPage))
-      console.log(page)
-      console.log(numberOfPosts)
-      console.log(postPerPage)
-      nextLink.classList.remove('disabled')
-    }
-    // cleanup function to run on component unmount
-    return () => {
     };
-  }, [page, postPerPage, numberOfPosts]);
+  
+    fetchData();
+  
+    const prevLink = document.getElementById("prev");
+    const nextLink = document.getElementById("next");
+  
+
+    if (page === 1) {
+      prevLink.classList.add('disabled');
+    } else if (prevLink.classList.contains("disabled")) {
+      prevLink.classList.remove('disabled');
+    }
+  
+    if (page === Math.ceil(numberOfPosts / postPerPage)) {
+      nextLink.classList.add('disabled');
+    } else if (nextLink.classList.contains("disabled")) {
+      nextLink.classList.remove('disabled');
+    }
+  }, [page, numberOfPosts, postPerPage]);
 
   useEffect(() => {
     const pageFirst = document.getElementById("first");
@@ -91,7 +89,7 @@ export default function FrontPage(props) {
       case parseInt(pageFirst.innerText):
         pageFirst.classList.add("active");
         pageSecond.classList.remove("active");
-        pageThird.classList.remove("active");
+        pageThird.classList.remove("active");   
         break;
       case parseInt(pageSecond.innerText):
         pageFirst.classList.remove("active");
@@ -106,90 +104,89 @@ export default function FrontPage(props) {
       default:
         break;
     }
-  }, [page]);
+  }, [page, numberOfPosts, postPerPage]);
 
+  useEffect(() => {
+    const pageSecond = document.getElementById("second");
+    const pageThird = document.getElementById("third");
   
-    // Geocode the addresses from the posts
-    const geocodeAddresses = async () => {
-      const geocodedPosts = [];
+    if (parseInt(pageSecond.innerText) > Math.ceil(numberOfPosts / postPerPage)) {
+      pageSecond.classList.add("hidden");
+      pageThird.classList.add("hidden")
+    } else {
+      pageSecond.classList.remove("hidden");
+      pageThird.classList.remove("hidden")
+    }
   
-      for (const post of posts) {
-        try {
-          const response = await Geocode.fromAddress(post.location);
-          const { lat, lng } = response.results[0].geometry.location;
-          geocodedPosts.push({ lat, lng });
-        } catch (error) {
-          console.error("Error geocoding address:", error);
-        }
+    if (parseInt(pageThird.innerText) > Math.ceil(numberOfPosts / postPerPage)) {
+      pageThird.classList.add("hidden");
+    } else {
+      pageThird.classList.remove("hidden");
+    }
+  }, [numberOfPosts, postPerPage]);
+
+  // Geocode the addresses from the posts
+  const geocodeAddresses = async () => {
+    const geocodedPosts = [];
+
+    for (const post of posts) {
+      try {
+        const response = await Geocode.fromAddress(post.location);
+        const { lat, lng } = response.results[0].geometry.location;
+        geocodedPosts.push({ lat: lat, lng: lng, post: post });
+      } catch (error) {
+        console.error("Error geocoding address:", error);
       }
-  
-      return geocodedPosts;
-    };
-  
-  /**
-    let map;
+    }
+    //console.log(geocodedPosts)
+    return geocodedPosts;
+  };
 
-    async function initMap(locations) {
-      // The location of Uluru
-      const position = locations[0];
-      // Request needed libraries.
-      //@ts-ignore
-      const { Map } = await google.maps.importLibrary("maps");
-      const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-    
-      // The map, centered at Uluru
+  useEffect(() => {
+    const updateLocations = async () => {
+      const coords = await geocodeAddresses();
+      setLocations(coords)
+    };
+
+    updateLocations();
+    //initMap(locations);
+  }, [posts]);
+
+  // Map from gogle website
+
+  let map;
+
+  const loader = new Loader({
+    apiKey: "AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY",
+    version: "weekly",
+  });
+  
+  loader.load().then(async () => {
+    const { Map } = await google.maps.importLibrary("maps");
+  
+    if (locations.length > 0) {
       map = new Map(document.getElementById("map"), {
-        zoom: 11,
-        center: position,
-        mapId:"DEMO_MAP_ID"
+        center: { lat: locations[0].lat, lng: locations[0].lng },
+        zoom: 8,
       });
-    
+    }
+  });
+
+  useEffect(() => {
+    for (const postInfo of locations) {
       let marker;
     
-      locations.map((location, index) =>
-        marker = new AdvancedMarkerElement({
-        map: map,
-        position: location[index],
-        title: posts[index].title,
-        })
-      )
-      // The marker, positioned at Uluru
+      if (postInfo) {
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(postInfo.lat, postInfo.lng),
+          title: "Hello World!"
+        });
+      }
+      if (marker) {
+        marker.setMap(map);
+      }
     }
-*/
-    useEffect(() => {
-      const updateLocations = async () => {
-        const coords = await geocodeAddresses();
-        setLocations(coords);
-      };
-  
-      updateLocations();
-      //initMap(locations);
-    }, [posts]);
-
-  const MapContainer = ({ google, posts }) => {
-    const mapStyles = {
-      width: "68%",
-      height: "70%",
-      margin: "0 0 0 2%",
-    };
-
-  
-    return (
-      <Map google={google} style = {mapStyles} zoom={10} initialCenter={locations[0]} className = "google-maps">
-        {locations.map((location, index) => (
-          <Marker key={index} position={location} content="{posts[index].title}"/>
-        ))}
-      </Map>
-    );
-  };
-  
-
-  const WrappedMapContainer = GoogleApiWrapper({
-    apiKey: "AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY",
-  })(MapContainer);
-
-  
-
+  }, [locations]);
 
   
   const handleNextPage = () => {
@@ -223,7 +220,9 @@ export default function FrontPage(props) {
     }
     const pageClicked = document.getElementById(id);
     const page = parseInt(pageClicked.innerText);
+    if (!document.getElementById(id).classList.contains("active")){
     setPage(page)
+    }
     pageClicked.classList.add("active");
   };
 
@@ -263,12 +262,12 @@ export default function FrontPage(props) {
             </ul>
           </nav>
         </div>
-        <Grid container className="map-posts-container">
-          <Grid item xs={12} sm={6} className="google-maps">
-            <WrappedMapContainer posts={posts} />
+        <Grid container className="map-posts-container" style={{ height: '75vh' }}>
+          <Grid item xs={12} sm={6} style={{ padding: '0', margin: '0 0 0 5%', width: '100%' }}>
+            <div id="map" style={{ height: '100%' }}></div>
           </Grid>
           <Grid item xs={12} sm={3} className="posts-container">          
-            {posts.map(post => (<PostCard key = {post.id} {...post} />))}
+            {posts.map(post => (<PostCard key={post.id} {...post} />))}
           </Grid>
         </Grid>
       </Grid>
@@ -277,34 +276,3 @@ export default function FrontPage(props) {
 
 }
 
-//<WrappedMapContainer posts={posts} />
-/*
-          <Grid item xs = {12} sm = {12} className="posts-per-page">
-            <FormControl className="posts-per-page">
-              <InputLabel id="Posts Per Page">Posts Per Page</InputLabel>
-              <Select className="posts-per-page"
-                labelId="Posts Per Page"
-                value={postPerPage}d
-                onChange={(e => setPostPerPage(e.target.value))}>
-                  <MenuItem value="5"> 5 </MenuItem>
-                  <MenuItem value="10"> 10 </MenuItem>
-                  <MenuItem value="25"> 25 </MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs = {12} sm = {12} justifyContent="right">
-            <ButtonGroup>
-              <Button onClick={handlePrevPage}>
-                <ArrowBack />
-              </Button>
-              <Button onClick={handleNextPage}>
-                <ArrowForward />
-              </Button>
-            </ButtonGroup>
-          </Grid>
-          <Grid item xs={12} sm = {12}>
-            <Typography variant="h6" align = "center">
-              {1 + (page - 1) * postPerPage} - {page * postPerPage > numberOfPosts ? numberOfPosts : page * postPerPage} of {numberOfPosts}
-            </Typography>
-          </Grid>   
-*/
