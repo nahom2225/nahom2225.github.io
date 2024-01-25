@@ -315,4 +315,24 @@ class DeletePost(RetrieveUpdateDestroyAPIView):
             else:
                 return Response(status=status.HTTP_404_NOT_FOUND)
         
+class AccountPage(APIView):
+    serializer_class = AccountPage    
+    lookup_url_kwarg = 'account_id'   
+
+    def post(self, request, format = None):
+        if not self.request.session.exists(self.request.session.session_key):
+                self.request.session.create()
+        my_account_id = self.request.session[self.lookup_url_kwarg]   
+        if my_account_id != None:
+            serializer = self.serializer_class(data=request.data)
+            if serializer.is_valid():         
+                target_account = Account.objects.filter(account_id = serializer.data.get('username'))
+                if len(target_account) > 0:
+                    target_account = target_account[0]
+                    if my_account_id == target_account.account_id:
+                        return JsonResponse(serializer.data.get('username'), status = status.HTTP_200_OK)
+                    return JsonResponse({'No Access'}, status=status.HTTP_200_OK)
+                return Response({'Target Account Not Found': 'No Account Exists.'}, status=status.HTTP_404_NOT_FOUND)                
+            return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_409_CONFLICT)
+        return Response({'Account Not Found': 'Invalid Account Access.'}, status=status.HTTP_404_NOT_FOUND)
 

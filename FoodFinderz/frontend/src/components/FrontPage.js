@@ -63,6 +63,8 @@ export default function FrontPage(props) {
   
     fetchData();
   
+    console.log(posts)
+
     const prevLink = document.getElementById("prev");
     const nextLink = document.getElementById("next");
   
@@ -179,7 +181,7 @@ export default function FrontPage(props) {
       if (postInfo) {
         marker = new google.maps.Marker({
           position: new google.maps.LatLng(postInfo.lat, postInfo.lng),
-          title: "Hello World!"
+          title: postInfo.post.title
         });
       }
       if (marker) {
@@ -229,7 +231,7 @@ export default function FrontPage(props) {
   return (
     <Grid container>
       <AppBar position="static">
-        <Grid container>
+        <Grid container alignItems="center">
           <Grid item xs = {6}>
             <Toolbar>
               <Typography variant="h4">Food Finderz</Typography>

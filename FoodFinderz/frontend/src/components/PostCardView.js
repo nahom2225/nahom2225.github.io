@@ -25,6 +25,7 @@ export default function PostCardView(props) {
     const [post, setPost] = useState({});
     const classes = useStyles();
     const[account, setAccount] = useState({});
+    const [showDeleteButton, setShowDeleteButton] = useState(false);
 
     const navigate = useNavigate();
 
@@ -63,11 +64,12 @@ export default function PostCardView(props) {
             } else {
               response.json().then((data) => {
                 setAccount(data);
-                setUsername(data.username);
                 //console.log(data);
               })
             }
           })
+          setShowDeleteButton(post.account_poster === account.username);
+
         // cleanup function to run on component unmount
         return () => {
         };
@@ -94,18 +96,18 @@ export default function PostCardView(props) {
 
       return (
     <Grid container>
-        <AppBar position="static">
-            <Grid container>
-            <Grid item xs = {12} sm = {3}>
+          <AppBar position="static">
+            <Grid container alignItems="center">
+              <Grid item xs = {6}>
                 <Toolbar>
-                <Typography variant="h4">Food Finderz</Typography>
+                  <Typography variant="h4">Food Finderz</Typography>
                 </Toolbar>
-            </Grid>
-            <Grid item xs={12} sm={9} align="right">
+              </Grid>
+              <Grid item xs={6} align="right">
                 <AccountCard frontpage = {true} {...account}/>
+              </Grid>
             </Grid>
-            </Grid>
-        </AppBar>
+          </AppBar>
         <Grid container className={classes.container}>
             <Grid item xs={12} sm={6} className={classes.item}>
                 <Typography className={classes.label}>Poster:</Typography>
@@ -128,13 +130,15 @@ export default function PostCardView(props) {
                 <Typography>{post.description}</Typography>
             </Grid>
             <Grid item xs={12} className={classes.item}>
-            <Button
-                color="primary"
-                variant="contained"
-                onClick={deletePost}
-                >
-                    Delete
-                </Button>
+                {showDeleteButton && (
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={deletePost}
+                    >
+                        Delete
+                    </Button>
+                )}
             </Grid>
         </Grid>
     </Grid>

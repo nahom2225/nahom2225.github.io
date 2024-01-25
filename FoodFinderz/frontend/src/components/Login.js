@@ -85,27 +85,31 @@ export default function Login(props) {
                 </Typography>
             </Grid>
             <Grid item xs = {12} align = "center">
-                <TextField
-                    error={user_error}
-                    label="Username"
-                    placeholder="Enter Your Username"
-                    value={username}
-                    helperText={user_error}
-                    variant="outlined"
-                    onChange={handleUsernameChange}
-                />
+                <div class = "login">
+                    <TextField
+                        error={user_error}
+                        label="Username"
+                        placeholder="Enter Your Username"
+                        value={username}
+                        helperText={user_error}
+                        variant="outlined"
+                        onChange={handleUsernameChange}
+                    />
+                </div>
             </Grid>
             <Grid item xs = {12} align = "center">
-                <TextField
-                    error={pass_error}
-                    type = {showPassword ? "test" : "password"}
-                    label="Password"
-                    placeholder="Enter your Password"
-                    value={password}
-                    helperText={pass_error}
-                    variant="outlined"
-                    onChange={handlePasswordChange}
-                />
+                <div class = "login">
+                    <TextField
+                        error={pass_error}
+                        type = {showPassword ? "test" : "password"}
+                        label="Password"
+                        placeholder="Enter your Password"
+                        value={password}
+                        helperText={pass_error}
+                        variant="outlined"
+                        onChange={handlePasswordChange}
+                    />
+                </div>
             </Grid>
             <Grid item xs = {12} align = "center">
                 <FormControlLabel 

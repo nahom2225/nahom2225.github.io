@@ -1,9 +1,10 @@
 html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background-image: url(FoodFinderz\images\pexels-rodion-kutsaiev-4664463.jpg);
-    background-size: cover;
+  margin: 0;
+  padding: 0;
+  /*background-image: url('/static/images/missing_donut.jpg');*/
+  background-size: cover;
+  background-color: #dae0e6;
+  min-height: 100%; 
 }
 
 #main {
@@ -30,6 +31,7 @@ html, body {
     position: absolute;
     top: 15%;
     left: 15%;
+    max-width: 51%;
 }
 
 .scroll {
@@ -120,3 +122,60 @@ div.post-control {
   border-radius: 4%;
   box-shadow: -5px 5px 10px;
 }
+
+.round-box-shadow {
+  border-radius: 4%;
+  box-shadow: -5px 5px 10px;
+}
+
+.auto-complete-box{
+  width: 80%;
+  margin-bottom: 10px;
+  background-color: transparent;
+}
+
+.blue-background {
+  background-image: url('/static/images/missing_donut.jpg');
+}
+
+.textbox {
+  border-radius: 4%;
+  box-shadow: -5px 5px 10px;
+}
+
+.login  {
+  width: 50% !important;
+  border-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+#post-title .MuiFormControl-root{
+  width: 85% !important;
+  border-color: rgba(0, 0, 0, 0.5);
+}
+
+#post-food .MuiFormControl-root{
+  width: 65% !important;
+  border-color: rgba(0, 0, 0, 0.5);
+}
+
+#post-description .MuiFormControl-root{
+  width: 100% !important;
+  border-color: rgba(0, 0, 0, 0.5);
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.css-13cymwt-control, .css-t3ipsp-control {
+  background-color: transparent !important;
+  border-color: rgba(0, 0, 0, 0.5) !important;
+  max-width: 100% !important;
+}
+
+.css-14cuatq {
+  border-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+
+

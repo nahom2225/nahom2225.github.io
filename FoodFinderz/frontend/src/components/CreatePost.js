@@ -90,36 +90,136 @@ export default function CreatePost(props) {
 
 
     return (
-        <div>
+        <div className = "blue-background">
             <AppBar position="static">
-            <Grid container>
-                <Grid item xs = {12} sm = {3}>
-                <Toolbar>
-                    <Typography variant="h4"> Food Finderz</Typography>
-                </Toolbar>
+                <Grid container alignItems="center">
+                <Grid item xs = {6}>
+                    <Toolbar>
+                    <Typography variant="h4">Food Finderz</Typography>
+                    </Toolbar>
                 </Grid>
-                <Grid item xs={12} sm={9} align="right">
-                <AccountCard frontpage = {false} {...account}/>
+                <Grid item xs={6} align="right">
+                    <AccountCard frontpage = {true} {...account}/>
                 </Grid>
-            </Grid>
-            <Grid item xs = {12} algin = "center">
-                <Collapse in = {error != ""}>
-                    <Alert severity="error" onClose={() => {setError("")}}>
-                        {error}
-                    </Alert>
-                </Collapse>
-            </Grid>
+                </Grid>
             </AppBar>
             <div className = "topmidleft">
-            <Grid container style={{ gap: 15 }}>
-                <Grid item xs = {12}>
-                    <Typography variant="h5"> Create a Post! </Typography>
+                <Grid container style={{ gap: 15 }}>
+                    <Grid item xs = {12}>
+                        <Typography variant="h5"> Create a Post! </Typography>
+                    </Grid>
+                    <Grid item xs = {12} algin = "center">
+                    <Collapse in = {error != ""}>
+                        <Alert severity="error" onClose={() => {setError("")}} style = {{width: "100%"}}>
+                            {error}
+                        </Alert>
+                    </Collapse>
+                    </Grid>
+                    <Grid item xs = {12}>
+                        <Divider variant = "fullWidth" sx={{ borderBottomWidth: 5, width:"100%", color: "black"}}/>
+                    </Grid>
+                    <Grid item xs = {12} style = {{width: "100%"}}> 
+                        <div id = "post-title">
+                            <TextField
+                                error={null}
+                                label=""
+                                placeholder="Title"
+                                value={title}
+                                helperText={null}
+                                variant="outlined"
+                                onChange={(e) => {setTitle(e.target.value)
+                                                console.log(locationData);}}
+                                inputProps={{
+                                    style: {
+                                        width: "85%",                                       
+                                    },
+                                    maxLength: 50
+                                    }}
+                                />
+                        </div>
+                        <Typography variant = "h6">
+                            {title.length} / 50
+                        </Typography>
+                    </Grid>
+                    <Grid item xs = {12} style = {{width: "100%"}}> 
+                        <div id = "post-food">
+                            <TextField
+                                error={null}
+                                label=""
+                                placeholder="Food"
+                                value={food}
+                                helperText={null}
+                                variant="outlined"
+                                onChange={(e) => {setFood(e.target.value)}}
+                                inputProps={{
+                                    style: {
+                                        width: "75%",                                                                    
+                                    },
+                                    maxLength: 50
+                                    }}
+                                />
+                            </div>
+                        <Typography variant = "h6">
+                            {food.length} / 50
+                        </Typography>
+                    </Grid>
+                    <Grid item xs = {12} className="auto-complete-box"> 
+                        <GooglePlacesAutocomplete
+                            apiKey = "AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY"
+                            selectProps={{
+                                locationData,
+                                onChange: setLocationData,
+                            }}
+                            style={{
+                                input: {
+                                    width: "80%", 
+                                },
+                            }}
+                            className="custom-autocomplete"
+                        />
+                    </Grid>
+                    <Grid item xs = {12} style = {{width: "100%"}}> 
+                        <div id = "post-description">
+                            <TextField
+                                multiline
+                                rows={9}
+                                maxRows={10}
+                                error={null}
+                                label=""
+                                placeholder="Description (Optional)"
+                                value={description}
+                                helperText={null}
+                                variant="outlined"
+                                onChange={(e) => {setDescription(e.target.value)}}
+                                inputProps={{
+                                    style: {
+                                        width: "100%",                                            
+                                    },
+                                    maxLength: 2000
+                                    }}
+                                />
+                            </div>
+                        <Typography variant = "h6">
+                        {description.length} / 2000
+                        </Typography>
+                    </Grid>
+                    <Grid item xs = {12} style = {{width: "100%"}}> 
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={handleCreatePostButtonPressed}
+                            className = "card.button">
+                            Post
+                        </Button>  
+                    </Grid>           
                 </Grid>
-                <Grid item xs = {12}>
-                    <Divider variant = "fullWidth" sx={{ borderBottomWidth: 5, width:"840px"}}/>
-                </Grid>
-                <Grid item xs = {12} > 
-                    <Card className = "card">
+            </div>
+        </div>
+      );
+}
+
+/**
+ * <Card className = "card">
                         <Grid container style = {{ gap : 10 }}>
                             <Grid item xs = {12}>
                                 <TextField
@@ -207,47 +307,4 @@ export default function CreatePost(props) {
                             </Grid>
                         </Grid>
                     </Card>
-                </Grid>                
-            </Grid>
-            </div>
-        </div>
-      );
-}
-
-/**
-<TextField
-error={null}
-label=""
-placeholder="Title"
-value={title}
-helperText={null}
-variant="outlined"
-onChange={(e) => {setTitle(e.target.value)}}
-inputProps={{
-    style: {
-        width: "550px",
-    },
-    maxLength: 50
-    }}                                        
-/>
-**/
-
-/**
-<Autocomplete
-    options={locationOptions}
-    getOptionLabel={(option) => option.description}
-    inputValue={location}
-    onChange={(event, value) => {
-        handleLocationInputChange(event, value);}}
-    renderInput={(params) => (<TextField {...params} label="Location" variant="outlined" />)}
-    renderOption={(option) => <Typography>{option.description}</Typography>}
-/>
-{error && (
-    <Alert severity="error" onClose={() => setError("")}>
-        {error}
-    </Alert>
-    )}
-    <Typography variant = "h6">
-    {title.length} / 50
-    </Typography>
-**/
+ */

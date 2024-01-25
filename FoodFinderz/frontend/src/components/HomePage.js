@@ -13,6 +13,7 @@ import FrontPage from "./FrontPage";
 import Login from "./Login";
 import CreatePost from "./CreatePost";
 import PostCardView from "./PostCardView";
+import AccountPage from "./AccountPage"
 
 export default function Home(props) {
 
@@ -47,7 +48,7 @@ export default function Home(props) {
                         <Button color="primary" href='/create-account'>
                             Create Account
                         </Button>
-                        <Button color="default" href='/login'>
+                        <Button color="secondary" href='/login'>
                             Login
                         </Button>
                     </ButtonGroup>
@@ -70,6 +71,7 @@ export default function Home(props) {
                 <Route path ='/login' element={<Login/>} />
                 <Route path ='/create-post' element={<CreatePost/>} />
                 <Route path = '/frontpage/:post_id' element={<PostCardView/>} />
+                <Route path = '/account/:username' element={<AccountPage/>} />
             </Routes>
         </Router>
     );

@@ -45,4 +45,8 @@ class GetPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ('post_id',)
-    
+
+class AccountPage(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ('username')
