@@ -29,8 +29,7 @@ export default function PostCardView(props) {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // code to run on component mount        
+    useEffect(() => {     
         console.log(post_id)
         const requestOptions = {
             method: "GET",
@@ -69,8 +68,6 @@ export default function PostCardView(props) {
             }
           })
           setShowDeleteButton(post.account_poster === account.username);
-
-        // cleanup function to run on component unmount
         return () => {
         };
       }, [post_id]);

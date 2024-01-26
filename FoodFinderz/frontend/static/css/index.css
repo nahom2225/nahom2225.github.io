@@ -50,19 +50,25 @@ bottom: 2%;
 right: 2%; 
 }
 
-div.post-control {
-  margin-top: 1%;
-  margin-right: 9%;
+.post-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .posts-container {
   background-color: #f7f7f7;
   overflow-y: scroll;
-  height: 100%;
+  height: 75%;
   width: 58% !important; 
   box-shadow: -5px 5px 10px;
-  margin-right: 2% !important;
   border-radius: 4%;
+  }
+
+  .map-container {
+    padding: 0;
+    margin: 0 0 0 0;
+    width: 100%;
   }
 
 .page-range-container {
@@ -114,9 +120,8 @@ div.post-control {
 }
 
 #map {
-  width: 120%; 
-  height: 100%; 
-  min-height: 65%;
+  width: 95%; 
+  height: 95%; 
   margin: 0 auto; 
   display: block;
   border-radius: 4%;
@@ -178,4 +183,6 @@ div.post-control {
 }
 
 
-
+.app-bar {
+  flex-direction: row !important;
+}

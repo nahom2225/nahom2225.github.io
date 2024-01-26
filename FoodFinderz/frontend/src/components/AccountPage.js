@@ -23,7 +23,6 @@ export default function AccountPage(props) {
   Geocode.setApiKey("AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY");
 
   useEffect(() => {
-    // code to run on component mount
     fetch('/api/get-account').then((response) => {
       if (!response.ok){
         //props.clearAccountIdCallback();
@@ -40,7 +39,6 @@ export default function AccountPage(props) {
         })
       }
     })
-    // cleanup function to run on component unmount
     return () => {
     };
   }, []);

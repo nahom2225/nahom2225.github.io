@@ -28,7 +28,6 @@ export default function CreatePost(props) {
     const [locationOptions, setLocationOptions] = useState([]);
   
     useEffect(() => {
-      // code to run on component mount
       fetch('/api/get-account').then((response) => {
         if (!response.ok){
           console.log("OH OOHHH")
@@ -40,7 +39,6 @@ export default function CreatePost(props) {
             setUsername(data.username);
             console.log(data);})
         }})
-      // cleanup function to run on component unmount
       return () => {
       };
     }, []);

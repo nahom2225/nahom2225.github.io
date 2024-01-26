@@ -229,7 +229,52 @@ export default function FrontPage(props) {
   };
 
   return (
-    <Grid container>
+    <Grid container justifyContent="space-around" style = {{height: "100vh"}}>
+      <AppBar className="app-bar" position="static">
+        <Grid container alignItems="center">
+          <Grid item xs = {6}>
+            <Toolbar>
+              <Typography variant="h4">Food Finderz</Typography>
+            </Toolbar>
+          </Grid>
+          <Grid item xs={6} align="right">
+            <AccountCard frontpage = {true} {...account}/>
+          </Grid>
+        </Grid>
+      </AppBar>
+      <Grid className = "post-control" item xs = {12} justifyContent="right">
+        <ul className="pagination">
+          <li id="prev" className="page-item disabled">
+            <a className="page-link" onClick={handlePrevPage}>Previous</a>
+          </li>
+          <li id="first" className="page-item active">
+            <a className="page-link" onClick={() => handleActive("first")}>{1 + pageOffset}</a>
+          </li>
+          <li id="second" className="page-item">
+            <a className="page-link" onClick={() => handleActive("second")}>{2 + pageOffset}</a>
+          </li>
+          <li id="third" className="page-item">
+            <a className="page-link" onClick={() => handleActive("third")}>{3 + pageOffset}</a>
+          </li>
+          <li id="next" className="page-item">
+            <a className="page-link" onClick={handleNextPage}>Next</a>
+          </li>
+        </ul>
+      </Grid>
+      <Grid item xs={9} className = "map-container">
+        <div id="map"></div>
+      </Grid>
+      <Grid item xs={3} className="posts-container">          
+        {posts.map(post => (<PostCard key={post.id} owner = {post.account_poster == username ? true : false} {...post} />))}
+      </Grid>
+    </Grid>
+  );
+
+}
+
+
+/*
+<Grid container>
       <AppBar position="static">
         <Grid container alignItems="center">
           <Grid item xs = {6}>
@@ -269,12 +314,9 @@ export default function FrontPage(props) {
             <div id="map" style={{ height: '100%' }}></div>
           </Grid>
           <Grid item xs={12} sm={3} className="posts-container">          
-            {posts.map(post => (<PostCard key={post.id} {...post} />))}
+            {posts.map(post => (<PostCard key={post.id} owner = {post.account_poster == username ? true : false} {...post} />))}
           </Grid>
         </Grid>
       </Grid>
     </Grid>
-  );
-
-}
-
+    */
