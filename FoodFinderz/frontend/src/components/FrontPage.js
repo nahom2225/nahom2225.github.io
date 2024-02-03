@@ -111,6 +111,7 @@ export default function FrontPage(props) {
   useEffect(() => {
     const pageSecond = document.getElementById("second");
     const pageThird = document.getElementById("third");
+    const nextLink = document.getElementById("next");
   
     if (parseInt(pageSecond.innerText) > Math.ceil(numberOfPosts / postPerPage)) {
       pageSecond.classList.add("hidden");
@@ -124,6 +125,10 @@ export default function FrontPage(props) {
       pageThird.classList.add("hidden");
     } else {
       pageThird.classList.remove("hidden");
+    }
+
+    if (numberOfPosts === 0) {
+        nextLink.classList.add("disabled")
     }
   }, [numberOfPosts, postPerPage]);
 
@@ -234,7 +239,7 @@ export default function FrontPage(props) {
         <Grid container alignItems="center">
           <Grid item xs = {6}>
             <Toolbar>
-              <Typography variant="h4">Food Finderz</Typography>
+              <Typography variant="h4">Free Food Finderz</Typography>
             </Toolbar>
           </Grid>
           <Grid item xs={6} align="right">
@@ -242,7 +247,10 @@ export default function FrontPage(props) {
           </Grid>
         </Grid>
       </AppBar>
-      <Grid className = "post-control" item xs = {12} justifyContent="right">
+      <Grid className = "post-control" item xs = {12}>
+        <Typography variant="h5">All Posts!</Typography>
+      </Grid>
+      <Grid className = "post-control" item xs = {12}>
         <ul className="pagination">
           <li id="prev" className="page-item disabled">
             <a className="page-link" onClick={handlePrevPage}>Previous</a>
@@ -272,51 +280,3 @@ export default function FrontPage(props) {
 
 }
 
-
-/*
-<Grid container>
-      <AppBar position="static">
-        <Grid container alignItems="center">
-          <Grid item xs = {6}>
-            <Toolbar>
-              <Typography variant="h4">Food Finderz</Typography>
-            </Toolbar>
-          </Grid>
-          <Grid item xs={6} align="right">
-            <AccountCard frontpage = {true} {...account}/>
-          </Grid>
-        </Grid>
-      </AppBar>
-      <Grid container justifyContent="flex-end">
-        <div className = "post-control">
-          <nav aria-label="...">
-            <ul className="pagination">
-              <li id="prev" className="page-item disabled">
-                <a className="page-link" onClick={handlePrevPage}>Previous</a>
-              </li>
-              <li id="first" className="page-item active">
-                <a className="page-link" onClick={() => handleActive("first")}>{1 + pageOffset}</a>
-              </li>
-              <li id="second" className="page-item">
-                <a className="page-link" onClick={() => handleActive("second")}>{2 + pageOffset}</a>
-              </li>
-              <li id="third" className="page-item">
-                <a className="page-link" onClick={() => handleActive("third")}>{3 + pageOffset}</a>
-              </li>
-              <li id="next" className="page-item">
-                <a className="page-link" onClick={handleNextPage}>Next</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <Grid container className="map-posts-container" style={{ height: '75vh' }}>
-          <Grid item xs={12} sm={6} style={{ padding: '0', margin: '0 0 0 5%', width: '100%' }}>
-            <div id="map" style={{ height: '100%' }}></div>
-          </Grid>
-          <Grid item xs={12} sm={3} className="posts-container">          
-            {posts.map(post => (<PostCard key={post.id} owner = {post.account_poster == username ? true : false} {...post} />))}
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
-    */

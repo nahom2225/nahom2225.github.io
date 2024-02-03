@@ -185,4 +185,5 @@ right: 2%;
 
 .app-bar {
   flex-direction: row !important;
+  height: 8% !important;
 }

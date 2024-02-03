@@ -200,6 +200,19 @@ class PostsList(APIView):
             'results': serializer.data
         }
         return Response(response_data)     
+    
+class YourPostsList(APIView):    
+
+    def get(self, request, page, posts_per_page, account):
+        posts = Post.objects.order_by('-created_at').filter(account_poster = account)
+        paginator = Paginator(posts, posts_per_page)
+        paginated_posts = paginator.get_page(page)
+        serializer = PostSerializer(paginated_posts, many=True)
+        response_data = {
+            'count': posts.count(),
+            'results': serializer.data
+        }
+        return Response(response_data)   
 
 class GetPost(APIView):
     serializer_class = GetPostSerializer    

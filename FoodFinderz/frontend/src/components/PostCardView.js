@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useRef, useState, useEffect } from "react";
 import { Grid, Button, ButtonGroup, Typography, TextField, AppBar, Toolbar, Card, CardActionArea, CardContent} from '@material-ui/core'
 import {BrowserRouter as Router, Routes, Route, Link, Redirect, Navigate,} from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
@@ -67,10 +67,25 @@ export default function PostCardView(props) {
               })
             }
           })
-          setShowDeleteButton(post.account_poster === account.username);
+
         return () => {
         };
       }, [post_id]);
+
+  
+
+      const isInitialRender = useRef(true);
+
+      useEffect(() => {
+          if (isInitialRender.current) {
+              isInitialRender.current = false;
+              return;
+          }
+
+          setShowDeleteButton(post.account_poster === account.username);
+      }, [post, account]);
+
+
 
       function deletePost () {
         const requestOptions = {
@@ -97,7 +112,7 @@ export default function PostCardView(props) {
             <Grid container alignItems="center">
               <Grid item xs = {6}>
                 <Toolbar>
-                  <Typography variant="h4">Food Finderz</Typography>
+                  <Typography variant="h4">Free Food Finderz</Typography>
                 </Toolbar>
               </Grid>
               <Grid item xs={6} align="right">

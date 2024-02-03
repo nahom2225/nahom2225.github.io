@@ -93,7 +93,7 @@ export default function CreatePost(props) {
                 <Grid container alignItems="center">
                 <Grid item xs = {6}>
                     <Toolbar>
-                    <Typography variant="h4">Food Finderz</Typography>
+                    <Typography variant="h4">Free Food Finderz</Typography>
                     </Toolbar>
                 </Grid>
                 <Grid item xs={6} align="right">
