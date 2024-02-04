@@ -9,6 +9,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
+import GoogleLoginButton from './GoogleLoginButton';
 
 export default function CreateAccount(props) {
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ export default function CreateAccount(props) {
     const[user_error, setUserError] = useState('');
     const[pass_error, setPassError] = useState('');
     const[showPassword, setShowPassword] = useState(false);
+    
 
 
 
@@ -133,6 +135,9 @@ export default function CreateAccount(props) {
                     >
                         Create Account
                     </Button>
+                </Grid>
+                <Grid item xs = {12} align = "center">
+                    <GoogleLoginButton text = {"Sign Up with Google"}/>
                 </Grid>
             </Grid>
         </div>

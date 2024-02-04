@@ -11,6 +11,7 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import Alert from "@material-ui/lab/Alert";
 import { getOptionGroupUnstyledUtilityClass } from "@mui/base";
+import GoogleLoginButton from './GoogleLoginButton';
 
 export default function Login(props) {
     const navigate = useNavigate();
@@ -131,6 +132,9 @@ export default function Login(props) {
                 >
                     Login
                 </Button>
+            </Grid>
+            <Grid item xs = {12} align = "center">
+                <GoogleLoginButton text = {"Login with Google"}/>
             </Grid>
         </Grid>
     </div>
