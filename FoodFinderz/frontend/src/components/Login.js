@@ -23,7 +23,17 @@ export default function Login(props) {
     const[pass_error, setPassError] = useState('');
     const[showPassword, setShowPassword] = useState(false);
 
-
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+    
+        document.body.appendChild(script);
+    
+        return () => {
+          document.body.removeChild(script);
+        };
+      }, []);
 
     function handleUsernameChange () {
         setUsername(event.target.value);
@@ -134,7 +144,7 @@ export default function Login(props) {
                 </Button>
             </Grid>
             <Grid item xs = {12} align = "center">
-                <GoogleLoginButton text = {"Login with Google"}/>
+                <GoogleLoginButton text = {"signin_with"}/>
             </Grid>
         </Grid>
     </div>

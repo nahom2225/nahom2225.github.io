@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, useRef} from "react";
 import { Grid, Typography, Card, CardActionArea, CardContent, IconButton } from "@material-ui/core";
 import { ArrowUpward, ArrowDownward } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
@@ -79,6 +79,7 @@ export default function PostCard(props) {
     };
   }, [votes]);
 
+
   function handleClick() {
     navigate(`/frontpage/${props.post_id}`);
   }
@@ -144,7 +145,7 @@ export default function PostCard(props) {
               <Typography>Title: {props.title}</Typography>
               <Typography>Food: {props.food}</Typography>
               <Typography>Location: {props.location}</Typography>
-              <Typography>Description: {props.description}</Typography>
+              <input type="range" class="form-range" min="0" max="10" step="1" id="food_left" value={props.food_left} disabled/>
             </CardContent>
           </CardActionArea>
         </Grid>

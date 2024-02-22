@@ -105,6 +105,13 @@ export default function PostCardView(props) {
               }})
         }
         
+        function editPost() {
+          navigate(`/edit-post/${post.account_poster}/${post_id}`, {
+            state: { post: post }
+          });
+        }
+          
+      
 
       return (
     <Grid container>
@@ -149,6 +156,17 @@ export default function PostCardView(props) {
                         onClick={deletePost}
                     >
                         Delete
+                    </Button>
+                )}
+            </Grid>
+            <Grid item xs={12} className={classes.item}>
+                {showDeleteButton && (
+                    <Button
+                        color="secondary"
+                        variant="contained"
+                        onClick={editPost}
+                    >
+                        Edit
                     </Button>
                 )}
             </Grid>

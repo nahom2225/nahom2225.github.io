@@ -14,7 +14,9 @@ import Alert from "@material-ui/lab/Alert";
 import { Title } from "@material-ui/icons";
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 
-export default function CreatePost(props) {
+import GOOGLE_API_KEY from "C:/Users/nahom/Desktop/FF/FoodFinderz/google/credentials.py";
+
+export default function EditPost(props) {
 
     const navigate = useNavigate();
 
@@ -37,7 +39,8 @@ export default function CreatePost(props) {
           response.json().then((data) => {
             setAccount(data);
             setUsername(data.username);
-            console.log(data);})
+            console.log(data);
+            console.log(GOOGLE_API_KEY);})
         }})
       return () => {
       };
@@ -55,6 +58,7 @@ export default function CreatePost(props) {
         console.log('location:', locationData.label);
         console.log('description:', description);
         console.log('username:', username);
+        console.log('food_left:', document.getElementById("food_left").value );
         const requestOptions = {
             method: "POST",
             headers: { "Content-Type": "application/json"},
@@ -63,7 +67,8 @@ export default function CreatePost(props) {
                 food : food,
                 location : locationData.label,
                 description : description,
-                account_poster : username,                
+                account_poster : username,          
+                food_left: document.getElementById("food_left").value    
             }),
         };
         fetch("/api/create-post", requestOptions)
@@ -91,14 +96,14 @@ export default function CreatePost(props) {
         <div className = "blue-background">
             <AppBar position="static">
                 <Grid container alignItems="center">
-                <Grid item xs = {6}>
-                    <Toolbar>
-                    <Typography variant="h4">Free Food Finderz</Typography>
-                    </Toolbar>
-                </Grid>
-                <Grid item xs={6} align="right">
-                    <AccountCard frontpage = {true} {...account}/>
-                </Grid>
+                    <Grid item xs = {6}>
+                        <Toolbar>
+                            <Typography variant="h4">Free Food Finderz</Typography>
+                        </Toolbar>
+                    </Grid>
+                    <Grid item xs={6} align="right">
+                        <AccountCard frontpage = {true} {...account}/>
+                    </Grid>
                 </Grid>
             </AppBar>
             <div className = "topmidleft">
@@ -160,6 +165,12 @@ export default function CreatePost(props) {
                         <Typography variant = "h6">
                             {food.length} / 50
                         </Typography>
+                    </Grid>
+                    <Grid item xs = {12}> 
+                        <Typography variant = "h6">
+                            Food Invetory
+                        </Typography>
+                        <input type="range" class="form-range" min="0" max="10" step="1" id="food_left"/>
                     </Grid>
                     <Grid item xs = {12} className="auto-complete-box"> 
                         <GooglePlacesAutocomplete

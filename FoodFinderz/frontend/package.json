@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development --watch",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "start": "react-scripts start --port 3000 --template C:\\Users\nahom\\Desktop\\FF\\FoodFinderz\\frontend\\templates\\frontend\\index.html"
   },
   "keywords": [],
   "author": "",
@@ -45,8 +46,25 @@
     "react-google-places-autocomplete": "^4.0.1",
     "react-native": "^0.72.3",
     "react-native-google-places-autocomplete": "^2.5.1",
+    "react-refresh": "^0.14.0",
     "react-router-dom": "^6.6.2",
+    "react-scripts": "^5.0.1",
     "with-router": "^1.0.1"
   },
-  "description": ""
+  "description": "",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "compilerOptions": {
+    "baseUrl": "C:\\Users\\nahom\\Desktop\\FF\\FoodFinderz\\frontend\\templates\\frontend\\index.html"
+  }
 }

@@ -20,7 +20,8 @@ urlpatterns = [
     path('get-post-vote/<str:post_id>', VoteCheck.as_view()),
     path('delete-post', DeletePost.as_view()),
     path('account', AccountPage.as_view()),
-    path('get-your-posts/<str:account>/<int:page>/<int:posts_per_page>', YourPostsList.as_view()),                                                                                                                                                              
+    path('get-your-posts/<str:account>/<int:page>/<int:posts_per_page>', YourPostsList.as_view()),   
+    path('edit-post/<str:post_id>', EditPost.as_view())                                                                                                                                                           
 ]
 
 

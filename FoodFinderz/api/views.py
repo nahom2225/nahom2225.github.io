@@ -187,6 +187,36 @@ class CreatePost(APIView):
         print(errors)
         return Response({'error': 'Missing Information'}, status=status.HTTP_400_BAD_REQUEST)
     
+class EditPost(APIView):
+    serializer_class = CreatePostSerializer
+    
+    def post(self, request, post_id, format=None):
+        if not self.request.session.exists(self.request.session.session_key):
+            self.request.session.create()
+
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            queryset = Post.objects.filter(post_id = post_id)
+            if queryset.exists():
+                post = queryset[0]
+                serializer = self.serializer_class(instance=post, data=request.data)
+                account = Account.objects.filter(account_id=self.request.session['account_id'])
+                if post.account_poster == account[0].username and serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status = status.HTTP_202_ACCEPTED)
+                elif post.account_poster == account[0].username:
+                    return Response({'error': 'Invalid Access to Post'}, status=status.HTTP_403_FORBIDDEN)
+                else:
+                    return Response({'error': 'Invalid Data', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({'error': 'Post Not Found'}, status=status.HTTP_404_NOT_FOUND)
+        errors = serializer.errors
+        print(errors)  
+        print("HERE")
+        print(serializer.is_valid())
+        print(serializer)
+        return Response({'error': 'Invalid Data'}, status=status.HTTP_400_BAD_REQUEST)
+    
 #@api_view(['GET'])
 class PostsList(APIView):    
 

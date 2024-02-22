@@ -37,6 +37,7 @@ class Post(models.Model):
     location = models.CharField(max_length=200)
     location_lat = models.IntegerField(null=False, default = 0)
     location_long = models.IntegerField(null=False, default = 0)
+    food_left = models.IntegerField(null = False, default = 10)
     current_session = models.CharField(max_length=50, default="")
     description = models.CharField(max_length=2000, blank=True, null=True)
     account_poster = models.CharField(max_length=151)

@@ -13,7 +13,8 @@ import FrontPage from "./FrontPage";
 import Login from "./Login";
 import CreatePost from "./CreatePost";
 import PostCardView from "./PostCardView";
-import AccountPage from "./AccountPage"
+import AccountPage from "./AccountPage";
+import EditPost from "./EditPost";
 
 export default function Home(props) {
 
@@ -72,6 +73,7 @@ export default function Home(props) {
                 <Route path ='/create-post' element={<CreatePost/>} />
                 <Route path = '/frontpage/:post_id' element={<PostCardView/>} />
                 <Route path = '/account/:username' element={<AccountPage/>} />
+                <Route path = '/edit-post/:op/:post_id' element={<EditPost/>} />
             </Routes>
         </Router>
     );

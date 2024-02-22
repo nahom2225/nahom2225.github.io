@@ -8,5 +8,6 @@ urlpatterns = [
     path('login', index),
     path('create-post', index),
     path('frontpage/<str:post_id>', index),
-    path('account/<str:username>', index)
+    path('account/<str:username>', index),
+    path('edit-post/<str:op>/<str:post_id>', index)
 ]

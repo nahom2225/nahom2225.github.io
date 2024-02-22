@@ -24,6 +24,17 @@ export default function CreateAccount(props) {
     const[showPassword, setShowPassword] = useState(false);
     
 
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+    
+        document.body.appendChild(script);
+    
+        return () => {
+          document.body.removeChild(script);
+        };
+      }, []);
 
 
     function handleUsernameChange () {
@@ -137,7 +148,7 @@ export default function CreateAccount(props) {
                     </Button>
                 </Grid>
                 <Grid item xs = {12} align = "center">
-                    <GoogleLoginButton text = {"Sign Up with Google"}/>
+                    <GoogleLoginButton text = {"signup_with"}/>
                 </Grid>
             </Grid>
         </div>
