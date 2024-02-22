@@ -165,7 +165,7 @@ export default function FrontPage(props) {
   let map;
 
   const loader = new Loader({
-    apiKey: "INSERT API KEY HERE",
+    apiKey: "AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY",
     version: "weekly",
   });
   

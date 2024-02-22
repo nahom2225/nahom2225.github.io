@@ -179,7 +179,7 @@ export default function EditPost(props) {
                     </Grid>
                     <Grid item xs = {12} className="auto-complete-box"> 
                         <GooglePlacesAutocomplete
-                            apiKey = "INSERT API KEY HERE"
+                            apiKey = "AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY"
                             selectProps={{
                                 defaultInputValue: locationData,
                                 onChange: (selected) => setLocationData(selected.label),
