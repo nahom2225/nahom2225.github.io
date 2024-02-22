@@ -174,7 +174,7 @@ export default function EditPost(props) {
                     </Grid>
                     <Grid item xs = {12} className="auto-complete-box"> 
                         <GooglePlacesAutocomplete
-                            apiKey = "AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY"
+                            apiKey = "INSERT API KEY HERE"
                             selectProps={{
                                 locationData,
                                 onChange: setLocationData,
@@ -227,93 +227,3 @@ export default function EditPost(props) {
       );
 }
 
-/**
- * <Card className = "card">
-                        <Grid container style = {{ gap : 10 }}>
-                            <Grid item xs = {12}>
-                                <TextField
-                                    error={null}
-                                    label=""
-                                    placeholder="Title"
-                                    value={title}
-                                    helperText={null}
-                                    variant="outlined"
-                                    onChange={(e) => {setTitle(e.target.value)
-                                                    console.log(locationData);}}
-                                    inputProps={{
-                                        style: {
-                                            width: "600px",                                            
-                                        },
-                                        maxLength: 50
-                                        }}
-                                />
-                                <Typography variant = "h6">
-                                {title.length} / 50
-                                </Typography>
-                            </Grid>
-                            <Grid item xs = {12}>
-                                <TextField
-                                    error={null}
-                                    label=""
-                                    placeholder="Food"
-                                    value={food}
-                                    helperText={null}
-                                    variant="outlined"
-                                    onChange={(e) => {setFood(e.target.value)}}
-                                    inputProps={{
-                                        style: {
-                                            width: "550px",                                                                    
-                                        },
-                                        maxLength: 50
-                                        }}
-                                />
-                                <Typography variant = "h6">
-                                {food.length} / 50
-                                </Typography>
-                            </Grid>
-                            <Grid item xs = {9}>
-                                <GooglePlacesAutocomplete
-                                    apiKey = "AIzaSyBGClyq1L6HGnnlZZsYxxoQXaqdlKgsMXY"
-                                        selectProps={{
-                                            locationData,
-                                            onChange: setLocationData,
-                                        }}
-                                    />
-                            </Grid>
-                            <Grid item xs = {12}>
-                                <TextField
-                                    multiline
-                                    rows={9}
-                                    maxRows={10}
-                                    error={null}
-                                    label=""
-                                    placeholder="Description (Optional)"
-                                    value={description}
-                                    helperText={null}
-                                    variant="outlined"
-                                    onChange={(e) => {setDescription(e.target.value)}}
-                                    inputProps={{
-                                        style: {
-                                            width: "800px",                                            
-                                        },
-                                        maxLength: 2000
-                                        }}
-                                />
-                                <Typography variant = "h6">
-                                {description.length} / 2000
-                                </Typography>
-                            </Grid>
-                            <Grid item xs = {12} container justifyContent="flex-end">
-                                <Grid item>
-                                    <Button
-                                        color="primary"
-                                        variant="contained"
-                                        onClick={handleCreatePostButtonPressed}
-                                        className = "card.button">
-                                        Post
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Card>
- */

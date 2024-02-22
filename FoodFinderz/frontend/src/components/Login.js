@@ -150,39 +150,3 @@ export default function Login(props) {
     </div>
     )
 }
-
-/**
- *     function handleAccountButtonPressed () {
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json"},
-            body: JSON.stringify({
-                username : username,
-                password : password
-            }),
-        };
-        fetch("/api/login", requestOptions)
-        .then((response) => {
-            if (response.ok) {
-                response.json()
-                .then((data) => {navigate(`/frontpage/${data.account_id}`);
-                                console.log(data);})
-            } else if (response.status === 400) {
-                response.json().then((data) => {setError(data.error)
-                    console.log(data.error);});
-                    console.log(response.statusText);
-                    console.log("400")
-               
-            } else if (response.status === 401) {
-                response.json().then((data) => {setError(data.error);
-                    console.log(data.error);});
-                    console.log(response.statusText);
-                    console.log("401")
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-            setError(error)
-        });
-    }
- */

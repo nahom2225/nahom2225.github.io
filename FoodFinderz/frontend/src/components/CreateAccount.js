@@ -155,38 +155,3 @@ export default function CreateAccount(props) {
     )
 
 }
-
-/**
- *     function handleAccountButtonPressed () {
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json"},
-            body: JSON.stringify({
-                username : username,
-                password : password
-            }),
-        };
-        if (password != retypePassword) {
-            setPassError('Passwords Do Not Match!');
-        } else {
-        fetch("/api/create-account", requestOptions)
-        .then((response) => {
-            if (response.ok) {
-                response.json()
-                .then((data) => {navigate(`/frontpage/${data.account_id}`);
-                                console.log(data);})
-            } else if (response.status === 400) {
-                setUserError('Invalid Request')
-            } else if (response.status === 401) {
-                setUserError('Unauthorized')
-            } else if (response.status === 409) {
-                setUserError('Username is taken')
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-            setUserError('Error Occured')
-        });
-    }
-    }
- */

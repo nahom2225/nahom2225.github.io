@@ -75,21 +75,3 @@ function AccountCard(props) {
 
 }
 
-/*
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json"},
-            body: JSON.stringify({
-                username : props.username               
-            }),
-        };
-        fetch('api/account', requestOptions)
-        .then(response => {
-          if (response.ok) {
-            navigate(`/account/${props.username}`)
-          } else {
-            
-          }
-        })
-        .catch(error => console.log(error));
-*/
