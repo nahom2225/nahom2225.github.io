@@ -1,11 +1,16 @@
 {
+  "homepage": "http://nahom2225.github.io/FoodFinderz",
   "name": "frontend",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development --watch",
+    "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "webpack --mode production",
-    "start": "react-scripts start --port 3000 --template C:\\Users\nahom\\Desktop\\FF\\FoodFinderz\\frontend\\templates\\frontend\\index.html"
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "keywords": [],
   "author": "",
